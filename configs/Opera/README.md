@@ -1,0 +1,14 @@
+# Opera
+- The included configuration files can generate the two Opera field maps used in this study:
+  - "DSMap_V15.txt": B field from coils only
+  - "DSMap_V15_with_shielding.txt": B field from coils and magnetic materials
+- The generated files should be placed in "docdb-48650/data/Bmaps/PINN_paper/" for the downstream combination with the helicalc map.
+- A single .COND is used to define the ideal conductors used in both calculations:
+  - "Mu2e_V15_ideal_solenoids_DS6150.COND". Note that the current in the DS is set to I=6150 A vs. the nominal current of I=6114 A, which is used in helicalc.
+- A single .opc files defines the geometry of magnetic materials included in the map "DSMap_V15_with_shielding.txt":
+  - "DES-model-9.opc": includes the DES, floor layers, and floor plates.
+- ASCII .bh files define the B-H curves for the diffferent materials:
+  - "Tblock-rebar-p017.bh": DES (yellow in diagram); A-36 B-H curve with 1.7% fill factor and efficiency factor epsilon=1/3.
+  - "floor-rebar.bh": main floor slabs (green in diagram); mild average steel B-H curve with 10% fill factor and efficiency factor epsilon=1/2.
+  - "topping-rebar.bh": floor topping slab (blue in diagram); mild average steel B-H curve with 3.3% fill factor and efficiency factor epsilon=1/2.
+  - "A36.bh": floor plates (magenta in diagram); A-36 B-H curve with 100% fill factor and efficiency factor epsilon=1.
