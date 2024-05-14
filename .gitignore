@@ -162,5 +162,8 @@ cython_debug/
 # custom ignores
 # data symlink
 data
-# plots (?) fine as long as repo remains private before approval
-#plots
+# plots
+# comment out after approval.
+plots
+# preapproval plots -- these will always stay private
+plots_preapproval
