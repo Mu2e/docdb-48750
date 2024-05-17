@@ -165,5 +165,7 @@ data
 # plots
 # comment out after approval.
 plots
+plots.zip
 # preapproval plots -- these will always stay private
 plots_preapproval
+plots_preapproval.zip
