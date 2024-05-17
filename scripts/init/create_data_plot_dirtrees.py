@@ -3,7 +3,7 @@ import sys
 fpath = os.path.dirname(os.path.realpath(__file__))
 configs_dir = os.path.abspath(os.path.join(fpath, '..', '..', 'configs'))
 sys.path.append(configs_dir)
-from globals import LSQ_config_dict_minimal
+from model_globals import LSQ_config_dict_minimal
 
 if __name__=='__main__':
     start_dir = os.path.join(os.path.abspath(os.path.join(fpath, '..', '..')), '')

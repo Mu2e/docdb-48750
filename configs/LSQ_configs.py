@@ -4,7 +4,7 @@ import pandas as pd
 from mu2e import mu2e_ext_path
 from mu2e.cfg_defs import cfg_data, cfg_geom, cfg_plot, cfg_params, cfg_pickle
 from mean_fields import get_mean_fields_dict
-from globals import noise, noise_str, phony_curl, phony_curl_str, z0, LSQ_config_dict_minimal
+from model_globals import noise, noise_str, phony_curl, phony_curl_str, z0, LSQ_config_dict_minimal
 
 #### field map locations
 # test / validation points (only one map)
@@ -129,7 +129,11 @@ cfg_pickle_test2 = cfg_pickle(use_pickle=True, save_pickle=False,
                               save_name=f'docdb-48750/helicalc_standard_PINN_Rebar{noise_str}', recreate=True)
 # PINN subracted fit
 cfg_pickle_ps2 = cfg_pickle(use_pickle=True, save_pickle=True,
-                         load_name=f'docdb-48750/helicalc_standard_PINN_Rebar{noise_str}',
+                         # FIXME! There's a bug with loading params, recreate, then
+                         # running when loading the params again
+                         #load_name=f'docdb-48750/helicalc_standard_PINN_Rebar{noise_str}',
+                         # using params1 as a starting point, because it is equivalent
+                         load_name=f'docdb-48750/helicalc_Rebar{noise_str}',
                          save_name=f'docdb-48750/helicalc_standard_PINN_Rebar{noise_str}_PINN_subtracted', recreate=False)
 # test, PINN subtracted
 cfg_pickle_ps_test2 = cfg_pickle(use_pickle=True, save_pickle=False,
@@ -142,7 +146,7 @@ cfg_data3 = cfg_data('helicalc', 'DS', mapfile_3,
                      ('Z > 4.200', 'Z < 13.900'))
 # PINN subtracted
 n = LSQ_config_dict_minimal['3']['fitnames']['Initial']
-mapfile_ps3 = mu2e_ext_path+f'Bmaps/docdb-48750/Mu2e_V13_DSCylFMSAll_Helicalc_All_Coils_All_Busbars_Rebar{noise_str}_{n}_PINN_Subtracted.Mu2E.p'
+mapfile_ps3 = mu2e_ext_path+f'Bmaps/docdb-48750/Mu2e_V13_DSCylFMSAll_Helicalc_All_Coils_All_Busbars_Rebar{noise_str}_external_fit_{n}_PINN_Subtracted.Mu2E.p'
 mapfile_test_ps3 = mu2e_ext_path+f'Bmaps/docdb-48750/Mu2e_V13_DSCartVal_Helicalc_All_Coils_All_Busbars_Rebar_{n}_PINN_Subtracted.Mu2E.p'
 cfg_data_ps3 = cfg_data('helicalc', 'DS', mapfile_ps3,
                         ('Z > 4.200', 'Z < 13.900'))
@@ -185,13 +189,14 @@ cfg_data4 = cfg_data('helicalc', 'DS', mapfile_4,
                      ('Z > 4.200', 'Z < 13.900'))
 # PINN subtracted
 n = LSQ_config_dict_minimal['4']['fitnames']['Initial']
-mapfile_ps4 = mu2e_ext_path+f'Bmaps/docdb-48750/Mu2e_V13_DSCylFMSAll_Helicalc_All_Coils_All_Busbars_Rebar{noise_str}_{n}_PINN_Subtracted.Mu2E.p'
+mapfile_ps4 = mu2e_ext_path+f'Bmaps/docdb-48750/Mu2e_V13_DSCylFMSAll_Helicalc_All_Coils_All_Busbars_Rebar{noise_str}{phony_curl_str}_{n}_PINN_Subtracted.Mu2E.p'
 mapfile_test_ps4 = mu2e_ext_path+f'Bmaps/docdb-48750/Mu2e_V13_DSCartVal_Helicalc_All_Coils_All_Busbars_Rebar_{n}_PINN_Subtracted.Mu2E.p'
 cfg_data_ps4 = cfg_data('helicalc', 'DS', mapfile_ps4,
                         ('Z > 4.200', 'Z < 13.900'))
 cfg_data_test_ps4 = cfg_data('helicalc', 'DS', mapfile_test_ps4,
                              ('Z > 4.200', 'Z < 13.900', 'R <= 0.800'))
 # params
+# with ASYM
 cfg_params4 = cfg_params(pitch1=0, ms_h1=0, ns_h1=0, pitch2=0, ms_h2=0, ns_h2=0,
                          length1=12.5, ms_c1=70, ns_c1=7, length2=0, ms_c2=0, ns_c2=0,
                          ks_dict={'k1': [mean_fields_dict['phony_curl']['Bx'], False],
@@ -204,6 +209,19 @@ cfg_params4 = cfg_params(pitch1=0, ms_h1=0, ns_h1=0, pitch2=0, ms_h2=0, ns_h2=0,
                          ms_asym_max=10,
                          version=1006,
                          noise=noise, z0=z0, AB_lim=None, k_lim=None)
+# SYM only
+# cfg_params4 = cfg_params(pitch1=0, ms_h1=0, ns_h1=0, pitch2=0, ms_h2=0, ns_h2=0,
+#                          length1=12.5, ms_c1=70, ns_c1=1, length2=0, ms_c2=0, ns_c2=0,
+#                          ks_dict={'k1': [mean_fields_dict['phony_curl']['Bx'], False],
+#                                   'k2': [mean_fields_dict['phony_curl']['By'], False],
+#                                   'k3': [mean_fields_dict['phony_curl']['Bz'], False],
+#                                   'k4': [0., True], 'k5': [0., True],
+#                                   'k6': [0., True], 'k7': [0., True],},
+#                          bs_tuples=None, bs_bounds=None,
+#                          loss='linear', method='leastsq',
+#                          ms_asym_max=-1,
+#                          version=1006,
+#                          noise=noise, z0=z0, AB_lim=None, k_lim=None)
 # pickle
 # first fit
 cfg_pickle4 = cfg_pickle(use_pickle=False, save_pickle=True,

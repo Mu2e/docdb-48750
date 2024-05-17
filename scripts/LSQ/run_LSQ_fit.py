@@ -40,7 +40,7 @@ if __name__=='__main__':
         cfg_data_ = config['cfg_data_ps']
         cfg_pickle_ = config['cfg_pickle_ps']
         cfg_data_test_ = config['cfg_data_test_ps']
-        cfg_pickle_test_ = config['cfg_pickle_ps_test']
+        cfg_pickle_test_ = config['cfg_pickle_test_ps']
     else:
         name = config['fitnames']['Initial']
         cfg_data_ = config['cfg_data']

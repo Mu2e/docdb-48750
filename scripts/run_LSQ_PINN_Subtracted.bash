@@ -15,7 +15,7 @@ test="n"
 for i in $(seq 1 5);
 do
     echo $i
-    LOGFILE=$SCRIPT_DIR/../data/logs/docdb-48750/${i}_LSQ_fit_Initial.log
+    LOGFILE=$SCRIPT_DIR/../data/logs/docdb-48750/${i}_LSQ_fit_PINN_Subtracted.log
     echo LOGFILE=${LOGFILE}
-    python $SCRIPT_DIR/LSQ/run_LSQ_fit.py -M $i -P n -t ${test} &> $LOGFILE
+    python $SCRIPT_DIR/LSQ/run_LSQ_fit.py -M $i -P y -t ${test} &> $LOGFILE
 done

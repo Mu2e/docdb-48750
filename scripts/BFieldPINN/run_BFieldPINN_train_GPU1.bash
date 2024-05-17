@@ -1,5 +1,5 @@
 #!/bin/bash
-# Run all first iteration fits of LSQ
+# Run one model on GPU1
 
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
@@ -11,11 +11,14 @@ conda activate mu2eBFit
 test="n"
 #test="y"
 
-# loop through the 5 models
-for i in $(seq 1 5);
+DEV=1
+
+for i in 2 3;
 do
     echo $i
-    LOGFILE=$SCRIPT_DIR/../data/logs/docdb-48750/${i}_LSQ_fit_Initial.log
+    LOGFILE=$SCRIPT_DIR/../../data/logs/docdb-48750/${i}_LSQ_fit_PINN_Training.log
     echo LOGFILE=${LOGFILE}
-    python $SCRIPT_DIR/LSQ/run_LSQ_fit.py -M $i -P n -t ${test} &> $LOGFILE
+    cmd="python $SCRIPT_DIR/run_BFieldPINN_train.py -M $i -D $DEV -t ${test} &> $LOGFILE; python $SCRIPT_DIR/clean_PINN_log.py -L $LOGFILE >> $LOGFILE"
+    echo $cmd
+    eval "$cmd"
 done

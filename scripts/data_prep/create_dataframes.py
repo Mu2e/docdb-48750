@@ -6,7 +6,7 @@ import os
 import sys
 fpath = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(os.path.abspath(os.path.join(fpath, '..', '..', 'configs')))
-from globals import noise, noise_str, phony_curl, phony_curl_str
+from model_globals import noise, noise_str, phony_curl, phony_curl_str
 
 # add a curled field ?
 def Field_With_Curl(x, y, z, Cx = 10., Cy = 10., Cz = 10.):
