@@ -1,0 +1,4 @@
+[submodule "FMS_BFieldModel"]
+	path = FMS_BFieldModel
+	url = https://github.com/Mu2e/FMS_BFieldModel.git
+	branch = docdb-48750
