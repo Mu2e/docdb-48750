@@ -13,8 +13,10 @@ mapfile_test = mu2e_ext_path+f'Bmaps/docdb-48750/Mu2e_V13_DSCartVal_Helicalc_All
 mapfile_125 = mu2e_ext_path+f'Bmaps/docdb-48750/Mu2e_V13_DSCylFMSAll_Helicalc_All_Coils_All_Busbars_Rebar{noise_str}.Mu2E.p'
 mapfile_3 = mu2e_ext_path+f'Bmaps/docdb-48750/Mu2e_V13_DSCylFMSAll_Helicalc_All_Coils_All_Busbars_Rebar{noise_str}_external_fit.Mu2E.p'
 mapfile_4 = mu2e_ext_path+f'Bmaps/docdb-48750/Mu2e_V13_DSCylFMSAll_Helicalc_All_Coils_All_Busbars_Rebar{noise_str}{phony_curl_str}.Mu2E.p'
+mapfile_6 = mu2e_ext_path+f'Bmaps/docdb-48750/Mu2e_V13_DSCylFMSAll_Helicalc_No_Coils_All_Busbars{noise_str}.Mu2E.p'
+mapfile_7 = mu2e_ext_path+f'Bmaps/docdb-48750/Mu2e_V13_DSCylFMSAll_Helicalc_All_Coils_No_Busbars{noise_str}.Mu2E.p'
 # calculate mean Bx, By, Bz (for params setup)
-mean_fields_dict = get_mean_fields_dict({'nominal': mapfile_125, 'phony_curl': mapfile_4})
+mean_fields_dict = get_mean_fields_dict({'nominal': mapfile_125, 'phony_curl': mapfile_4, 'busbars': mapfile_6, 'DSCoils': mapfile_7})
 #### Shared tuples ####
 # data
 cfg_data_test = cfg_data('helicalc', 'DS', mapfile_test,
@@ -284,6 +286,122 @@ cfg_pickle_ps_test5 = cfg_pickle(use_pickle=True, save_pickle=False,
                                  load_name=f'docdb-48750/helicalc_Rebar{noise_str}_CylSym_fit_PINN_subtracted',
                                  save_name=f'docdb-48750/helicalc_Rebar{noise_str}_CylSym_fit_PINN_subtracted', recreate=True)
 
+#### Fit 6. bus bars only (with connectors). includes noise ####
+# data
+cfg_data6 = cfg_data('helicalc', 'DS', mapfile_6,
+                     ('Z > 4.200', 'Z < 13.900'))
+mapfile_test6 = mu2e_ext_path+f'Bmaps/docdb-48750/Mu2e_V13_DSCartVal_Helicalc_No_Coils_All_Busbars.Mu2E.p'
+cfg_data_test6 = cfg_data('helicalc', 'DS', mapfile_test6,
+                         ('Z > 4.200', 'Z < 13.900', 'R <= 0.800'))
+# PINN subtracted
+n = LSQ_config_dict_minimal['6']['fitnames']['Initial']
+mapfile_ps6 = mu2e_ext_path+f'Bmaps/docdb-48750/Mu2e_V13_DSCylFMSAll_Helicalc_No_Coils_All_Busbars{noise_str}_{n}_PINN_Subtracted.Mu2E.p'
+mapfile_test_ps6 = mu2e_ext_path+f'Bmaps/docdb-48750/Mu2e_V13_DSCartVal_Helicalc_No_Coils_All_Busbars_{n}_PINN_Subtracted.Mu2E.p'
+cfg_data_ps6 = cfg_data('helicalc', 'DS', mapfile_ps6,
+                        ('Z > 4.200', 'Z < 13.900'))
+cfg_data_test_ps6 = cfg_data('helicalc', 'DS', mapfile_test_ps6,
+                             ('Z > 4.200', 'Z < 13.900', 'R <= 0.800'))
+# params
+cfg_params6 = cfg_params(pitch1=0, ms_h1=0, ns_h1=0, pitch2=0, ms_h2=0, ns_h2=0,
+                         # cyl asym
+                         length1=12.5, ms_c1=70, ns_c1=7, length2=0, ms_c2=0, ns_c2=0,
+                         # cyl sym
+                         #length1=12.5, ms_c1=40, ns_c1=1, length2=0, ms_c2=0, ns_c2=0,
+                         # no cyl
+                         #length1=0, ms_c1=0, ns_c1=0, length2=0, ms_c2=0, ns_c2=0,
+                         ks_dict={'k1': [mean_fields_dict['busbars']['Bx'], False],
+                                  'k2': [mean_fields_dict['busbars']['By'], False],
+                                  'k3': [mean_fields_dict['busbars']['Bz'], False],
+                                  # standard vary
+                                  'k4': [0., True], 'k5': [0., False],
+                                  'k6': [0., False], 'k7': [0., True],},
+                                  # vary all
+                                  #'k4': [0., True], 'k5': [0., True],
+                                  #'k6': [0., True], 'k7': [0., True],},
+                                  # nothing varying
+                                  # 'k4': [0., False], 'k5': [0., False],
+                                  # 'k6': [0., False], 'k7': [0., False],},
+                         bs_tuples=None, bs_bounds=None,
+                         loss='linear', method='leastsq',
+                         ms_asym_max=10,
+                         version=1006,
+                         noise=noise, z0=z0, AB_lim=None, k_lim=None)
+# pickle
+# first fit
+cfg_pickle6 = cfg_pickle(use_pickle=False, save_pickle=True,
+                         load_name=f'docdb-48750/helicalc_Busbars{noise_str}',
+                         save_name=f'docdb-48750/helicalc_Busbars{noise_str}', recreate=False)
+# test
+cfg_pickle_test6 = cfg_pickle(use_pickle=True, save_pickle=False,
+                              load_name=f'docdb-48750/helicalc_Busbars{noise_str}',
+                              save_name=f'docdb-48750/helicalc_Busbars{noise_str}', recreate=True)
+# PINN subracted fit
+cfg_pickle_ps6 = cfg_pickle(use_pickle=True, save_pickle=True,
+                         load_name=f'docdb-48750/helicalc_Busbars{noise_str}',
+                         save_name=f'docdb-48750/helicalc_Busbars{noise_str}_PINN_subtracted', recreate=False)
+# test, PINN subtracted
+cfg_pickle_ps_test6 = cfg_pickle(use_pickle=True, save_pickle=False,
+                                 load_name=f'docdb-48750/helicalc_Busbars{noise_str}_PINN_subtracted',
+                                 save_name=f'docdb-48750/helicalc_Busbars{noise_str}_PINN_subtracted', recreate=True)
+
+#### Fit 7. DS coils only (with connectors). includes noise ####
+# data
+cfg_data7 = cfg_data('helicalc', 'DS', mapfile_7,
+                     ('Z > 4.200', 'Z < 13.900'))
+mapfile_test7 = mu2e_ext_path+f'Bmaps/docdb-48750/Mu2e_V13_DSCartVal_Helicalc_All_Coils_No_Busbars.Mu2E.p'
+cfg_data_test7 = cfg_data('helicalc', 'DS', mapfile_test7,
+                         ('Z > 4.200', 'Z < 13.900', 'R <= 0.800'))
+# PINN subtracted
+n = LSQ_config_dict_minimal['7']['fitnames']['Initial']
+mapfile_ps7 = mu2e_ext_path+f'Bmaps/docdb-48750/Mu2e_V13_DSCylFMSAll_Helicalc_All_Coils_No_Busbars{noise_str}_{n}_PINN_Subtracted.Mu2E.p'
+mapfile_test_ps7 = mu2e_ext_path+f'Bmaps/docdb-48750/Mu2e_V13_DSCartVal_Helicalc_All_Coils_No_Busbars_{n}_PINN_Subtracted.Mu2E.p'
+cfg_data_ps7 = cfg_data('helicalc', 'DS', mapfile_ps7,
+                        ('Z > 4.200', 'Z < 13.900'))
+cfg_data_test_ps7 = cfg_data('helicalc', 'DS', mapfile_test_ps7,
+                             ('Z > 4.200', 'Z < 13.900', 'R <= 0.800'))
+# params
+cfg_params7 = cfg_params(pitch1=0, ms_h1=0, ns_h1=0, pitch2=0, ms_h2=0, ns_h2=0,
+                         # cyl asym
+                         length1=12.5, ms_c1=70, ns_c1=7, length2=0, ms_c2=0, ns_c2=0,
+                         # cyl sym
+                         #length1=12.5, ms_c1=40, ns_c1=1, length2=0, ms_c2=0, ns_c2=0,
+                         # no cyl
+                         #length1=0, ms_c1=0, ns_c1=0, length2=0, ms_c2=0, ns_c2=0,
+                         ks_dict={'k1': [mean_fields_dict['DSCoils']['Bx'], False],
+                                  'k2': [mean_fields_dict['DSCoils']['By'], False],
+                                  'k3': [mean_fields_dict['DSCoils']['Bz'], False],
+                                  # standard vary
+                                  'k4': [0., True], 'k5': [0., False],
+                                  'k6': [0., False], 'k7': [0., True],},
+                                  # vary all
+                                  #'k4': [0., True], 'k5': [0., True],
+                                  #'k6': [0., True], 'k7': [0., True],},
+                                  # nothing varying
+                                  # 'k4': [0., False], 'k5': [0., False],
+                                  # 'k6': [0., False], 'k7': [0., False],},
+                         bs_tuples=None, bs_bounds=None,
+                         loss='linear', method='leastsq',
+                         ms_asym_max=10,
+                         version=1006,
+                         noise=noise, z0=z0, AB_lim=None, k_lim=None)
+# pickle
+# first fit
+cfg_pickle7 = cfg_pickle(use_pickle=False, save_pickle=True,
+                         load_name=f'docdb-48750/helicalc_DSCoils{noise_str}',
+                         save_name=f'docdb-48750/helicalc_DSCoils{noise_str}', recreate=False)
+# test
+cfg_pickle_test7 = cfg_pickle(use_pickle=True, save_pickle=False,
+                              load_name=f'docdb-48750/helicalc_DSCoils{noise_str}',
+                              save_name=f'docdb-48750/helicalc_DSCoils{noise_str}', recreate=True)
+# PINN subracted fit
+cfg_pickle_ps7 = cfg_pickle(use_pickle=True, save_pickle=True,
+                         load_name=f'docdb-48750/helicalc_DSCoils{noise_str}',
+                         save_name=f'docdb-48750/helicalc_DSCoils{noise_str}_PINN_subtracted', recreate=False)
+# test, PINN subtracted
+cfg_pickle_ps_test7 = cfg_pickle(use_pickle=True, save_pickle=False,
+                                 load_name=f'docdb-48750/helicalc_DSCoils{noise_str}_PINN_subtracted',
+                                 save_name=f'docdb-48750/helicalc_DSCoils{noise_str}_PINN_subtracted', recreate=True)
+
 #### Collect them all into a dictionary
 Lmin = LSQ_config_dict_minimal
 LSQ_config_dict = {
@@ -322,4 +440,18 @@ LSQ_config_dict = {
           'cfg_params': cfg_params5, 'cfg_pickle': cfg_pickle5,
           'cfg_pickle_test': cfg_pickle_test5, 'cfg_pickle_ps': cfg_pickle_ps5,
           'cfg_pickle_test_ps': cfg_pickle_ps_test5},
+    '6': {'subdir': Lmin['6']['subdir'], 'fitnames': Lmin['6']['fitnames'],
+          'cfg_data': cfg_data6, 'cfg_data_test': cfg_data_test6,
+          'cfg_data_ps': cfg_data_ps6, 'cfg_data_test_ps': cfg_data_test_ps6,
+          'cfg_geom_fit': cfg_geom_cyl, 'cfg_geom_test': cfg_geom_cart,
+          'cfg_params': cfg_params6, 'cfg_pickle': cfg_pickle6,
+          'cfg_pickle_test': cfg_pickle_test6, 'cfg_pickle_ps': cfg_pickle_ps6,
+          'cfg_pickle_test_ps': cfg_pickle_ps_test6},
+    '7': {'subdir': Lmin['7']['subdir'], 'fitnames': Lmin['7']['fitnames'],
+          'cfg_data': cfg_data7, 'cfg_data_test': cfg_data_test7,
+          'cfg_data_ps': cfg_data_ps7, 'cfg_data_test_ps': cfg_data_test_ps7,
+          'cfg_geom_fit': cfg_geom_cyl, 'cfg_geom_test': cfg_geom_cart,
+          'cfg_params': cfg_params7, 'cfg_pickle': cfg_pickle7,
+          'cfg_pickle_test': cfg_pickle_test7, 'cfg_pickle_ps': cfg_pickle_ps7,
+          'cfg_pickle_test_ps': cfg_pickle_ps_test7},
 }

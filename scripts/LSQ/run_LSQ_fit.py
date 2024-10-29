@@ -12,7 +12,7 @@ if __name__=='__main__':
     # parse command line arguments
     parser = argparse.ArgumentParser()
     parser.add_argument('-M', '--Model',
-                        help='Which model do you want to fit? [1 (default), 2, 3, 4, 5]')
+                        help='Which model do you want to fit? [1 (default), 2, 3, 4, 5, 6, 7]')
     parser.add_argument('-P', '--PINN_Subtracted',
                         help='Use the PINN subtracted field? "y" / "n" (default)')
     parser.add_argument('-t', '--Testing',

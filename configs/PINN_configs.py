@@ -32,8 +32,8 @@ base_NN_dict = {
     # early stop
     'Stop_monitor': 'Loss', 'Stop_patience': 3000, 'Stop_min_delta': 1e-6,
     # temper / pretrain lambda
-    'lambda_pretrain': 500, 'lambda_N_wait': 20000, 'lambda_mult_factor': 1.0, 'lambda_add_factor': 0.0,
-    'lambda_start_temper': 20000, 'lambda_max': 1000,
+    'lambda_pretrain': 500, 'lambda_N_wait': 200000, 'lambda_mult_factor': 1.0, 'lambda_add_factor': 0.0,
+    'lambda_start_temper': 200000, 'lambda_max': 1000,
     # save tracking information
     'track': True, 'track_stride': 10, 'track_queries': ['(X==-0.8) & (Y==0.0)', '(Y==0.0) & (Z==8.40)'],
     # jacobian dataframe setup
@@ -61,6 +61,20 @@ NN_config_dict = {
         deepcopy(base_NN_dict),
         **{'model_fname': LSQ_c['5']['fitnames']['Initial'], 'NN_type': 'Scalar'},
     ),
+    '6': dict(
+        deepcopy(base_NN_dict),
+        **{'model_fname': LSQ_c['6']['fitnames']['Initial'], 'NN_type': 'Scalar'},
+        #**{'model_fname': LSQ_c['6']['fitnames']['Initial'], 'NN_type': 'Standard'},
+    ),
+    '7': dict(
+        deepcopy(base_NN_dict),
+        **{'model_fname': LSQ_c['7']['fitnames']['Initial'], 'NN_type': 'Scalar'},
+        #**{'model_fname': LSQ_c['7']['fitnames']['Initial'], 'NN_type': 'Standard'},
+    ),
+    '8': dict(
+        deepcopy(base_NN_dict),
+        **{'model_fname': LSQ_c['8']['fitnames']['Initial'], 'NN_type': 'Scalar'},
+    ),
 }
 
 ### Extra customizations. See commented example
@@ -73,6 +87,20 @@ NN_config_dict['4']['lambda_pretrain'] = 200
 NN_config_dict['4']['lambda_'] = 0.5
 NN_config_dict['4']['LR_init'] = 0.001
 NN_config_dict['4']['LR_patience'] = 200
+# debuging 6 (busbars only)
+#NN_config_dict['6']['lambda_'] = 0.0
+#NN_config_dict['6']['N_f'] = 2
+#NN_config_dict['6']['lambda_'] = 0.01
+#NN_config_dict['6']['N_f'] = 20000
+#NN_config_dict['6']['epochs'] = 20000
+#NN_config_dict['6']['lambda_pretrain'] = 1000
+#NN_config_dict['6']['N_hidden'] = 10
+#NN_config_dict['6']['N_nodes'] = 128
+#NN_config_dict['6']['LR_init'] = 0.001
+#NN_config_dict['6']['lambda_'] = 0.05
+# debugging 7 (DS coils only with connectors)
+#NN_config_dict['7']['lambda_'] = 0.0
+#NN_config_dict['7']['N_f'] = 2
 
 ### filenames
 files_dict = {}

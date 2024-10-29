@@ -13,7 +13,8 @@ test="n"
 
 DEV=2
 
-for i in 4;
+#for i in 4 6;
+for i in 6;
 do
     echo $i
     LOGFILE=$SCRIPT_DIR/../../data/logs/docdb-48750/${i}_LSQ_fit_PINN_Training.log

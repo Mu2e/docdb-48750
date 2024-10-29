@@ -11,8 +11,8 @@ conda activate mu2eBFit
 test="n"
 #test="y"
 
-# loop through the 5 models
-for i in $(seq 1 5);
+# loop through the 7 models
+for i in $(seq 1 7);
 do
     echo $i
     LOGFILE=$SCRIPT_DIR/../data/logs/docdb-48750/${i}_LSQ_fit_PINN_Subtracted.log

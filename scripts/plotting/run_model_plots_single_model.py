@@ -36,7 +36,7 @@ if __name__=='__main__':
     # parse command line arguments
     parser = argparse.ArgumentParser()
     parser.add_argument('-M', '--Model',
-                        help='Which model do you want to fit? [1 (default), 2, 3, 4, 5]')
+                        help='Which model do you want to fit? [1 (default), 2, 3, 4, 5, 6, 7]')
     args = parser.parse_args()
     # fill defaults if necessary
     if args.Model is None:

@@ -39,7 +39,7 @@ if __name__=='__main__':
     # parse command line arguments
     parser = argparse.ArgumentParser()
     parser.add_argument('-M', '--Model',
-                        help='Which model do you want to fit? [1 (default), 2, 3, 4, 5]')
+                        help='Which model do you want to fit? [1 (default), 2, 3, 4, 5, 6, 7]')
     parser.add_argument('-D', '--Device',
                         help='Which GPU to use? [0 (default), 1, 2, 3].')
     parser.add_argument('-t', '--Testing',
