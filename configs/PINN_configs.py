@@ -71,10 +71,11 @@ NN_config_dict = {
         **{'model_fname': LSQ_c['7']['fitnames']['Initial'], 'NN_type': 'Scalar'},
         #**{'model_fname': LSQ_c['7']['fitnames']['Initial'], 'NN_type': 'Standard'},
     ),
-    '8': dict(
-        deepcopy(base_NN_dict),
-        **{'model_fname': LSQ_c['8']['fitnames']['Initial'], 'NN_type': 'Scalar'},
-    ),
+    # FIXME! What was this added for? There isn't a corresponding LSQ model.
+    # '8': dict(
+    #     deepcopy(base_NN_dict),
+    #     **{'model_fname': LSQ_c['8']['fitnames']['Initial'], 'NN_type': 'Scalar'},
+    # ),
 }
 
 ### Extra customizations. See commented example
