@@ -13,7 +13,25 @@ test="n"
 
 DEV=1
 
-for i in 2 3;
+# hyperparam opt
+#MODELS=("1_1" "1_5" "1_9" "1_13")
+# reruns
+#MODELS=("1_9" "1_13")
+# MODELS=("1_13")
+# remove memory overrun
+#MODELS=("1_1" "1_5" "1_9" "1_13")
+# MODELS=("1_10")
+## a optimization (16 - 23)
+# MODELS=("1_17" "1_20")
+#MODELS=("1_23")
+# MODELS=("1_17")
+# MODELS=("1")
+## lambda_ optimization / tests (25-30)
+#MODELS=("1_26")
+MODELS=("1_27")
+
+#for i in 2 3;
+for i in "${MODELS[@]}";
 do
     echo $i
     LOGFILE=$SCRIPT_DIR/../../data/logs/docdb-48750/${i}_LSQ_fit_PINN_Training.log

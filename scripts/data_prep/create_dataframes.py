@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import pickle as pkl
 from mu2e import mu2e_ext_path
 # globals
 import os
@@ -125,5 +126,56 @@ if __name__=='__main__':
     # save
     print(f'Saving to: {fname7}.')
     df7.to_pickle(fname7)
+    print('Done.\n')
+    #### HPC mag unc
+    sf_file = os.path.join(os.path.abspath(os.path.join(fpath, '..', '..', 'configs')), 'HPCMagUnc_SFs.p')
+    params_HPCMag = pkl.load(open(sf_file, 'rb'))
+    fname8 = fname1.replace('.Mu2E.p', f'_HPCMagUnc.Mu2E.p')
+    df8 = df1.copy()
+    for k, SF in params_HPCMag.items():
+        map_ = (df8.HP == k)
+        for i in ['x', 'y', 'z', 'r', 'phi']:
+            df8.loc[map_, f'B{i}'] *= SF
+    # save
+    print(f'Saving to: {fname8}.')
+    df8.to_pickle(fname8)
+    print('Done.\n')
+    #### SparseZPhi
+    fname9 = fname1.replace('.Mu2E.p', '_SparseZPhi.Mu2E.p')
+    df9 = df1.copy()
+    print('Removing half of phi steps...')
+    print(f'len(df9) before = {len(df9)}')
+    df9 = df9[np.any(np.isclose(df9.Phi.values[:, np.newaxis], np.sort(df9.Phi.unique())[::2][np.newaxis, :]), axis=1)]
+    df9.reset_index(drop=True, inplace=True)
+    print(f'len(df9) after = {len(df9)}')
+    print('Removing half of z steps...')
+    print(f'len(df9) before = {len(df9)}')
+    ###df0 = df0[np.any(np.isclose(df0.Z.values[:, np.newaxis], np.sort(df0.Z.unique())[::2][np.newaxis, :]), axis=1)]
+    # splitting props
+    df9 = df9[np.any(np.isclose(df9.Z.values[:, np.newaxis], np.sort(np.concatenate([df9.query('HP == "BP1"').Z.unique()[::2], df9.query('HP == "SP1"').Z.unique()[::2]]))[np.newaxis, :]), axis=1)]
+    df9.reset_index(drop=True, inplace=True)
+    print(f'len(df9) after = {len(df9)}')
+    # save
+    print(f'Saving to: {fname9}.')
+    df9.to_pickle(fname9)
+    print('Done.\n')
+    #### HPCMagUnc, SparseZPhi
+    fname10 = fname1.replace('.Mu2E.p', '_HPCMagUnc_SparseZPhi.Mu2E.p')
+    df10 = df8.copy()
+    print('Removing half of phi steps...')
+    print(f'len(df10) before = {len(df10)}')
+    df10 = df10[np.any(np.isclose(df10.Phi.values[:, np.newaxis], np.sort(df10.Phi.unique())[::2][np.newaxis, :]), axis=1)]
+    df10.reset_index(drop=True, inplace=True)
+    print(f'len(df10) after = {len(df10)}')
+    print('Removing half of z steps...')
+    print(f'len(df10) before = {len(df10)}')
+    ###df0 = df0[np.any(np.isclose(df0.Z.values[:, np.newaxis], np.sort(df0.Z.unique())[::2][np.newaxis, :]), axis=1)]
+    # splitting props
+    df10 = df10[np.any(np.isclose(df10.Z.values[:, np.newaxis], np.sort(np.concatenate([df10.query('HP == "BP1"').Z.unique()[::2], df10.query('HP == "SP1"').Z.unique()[::2]]))[np.newaxis, :]), axis=1)]
+    df10.reset_index(drop=True, inplace=True)
+    print(f'len(df10) after = {len(df10)}')
+    # save
+    print(f'Saving to: {fname10}.')
+    df10.to_pickle(fname10)
     print('Done.\n')
     print('Field map prep is complete.')

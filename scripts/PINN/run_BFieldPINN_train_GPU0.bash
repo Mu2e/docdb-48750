@@ -1,5 +1,5 @@
 #!/bin/bash
-# Run one model on GPU2
+# Run one model on GPU0
 
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
@@ -11,10 +11,26 @@ conda activate mu2eBFit
 test="n"
 #test="y"
 
-DEV=2
+DEV=0
 
-#for i in 4 6;
-for i in 6;
+# hyperparam opt
+# MODELS=("1_0" "1_4" "1_8" "1_12")
+# reruns
+# MODELS=("1_12")
+# MODELS=("1_9")
+# remove memory overrun
+#MODELS=("1_0" "1_8" "1_12")
+# MODELS=("1_0")
+## a optimization (16 - 22)
+#MODELS=("1_16")
+#MODELS=("1_22")
+## lambda_ optimization / tests (25-30)
+#MODELS=("1_25")
+# MODELS=("1_30")
+MODELS=("9")
+
+#for i in 1;
+for i in "${MODELS[@]}";
 do
     echo $i
     LOGFILE=$SCRIPT_DIR/../../data/logs/docdb-48750/${i}_LSQ_fit_PINN_Training.log

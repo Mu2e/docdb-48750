@@ -98,8 +98,8 @@ if __name__=='__main__':
     N_epochs = len(history_callback.history['Loss'])
     if NN_config_dict[model_num]['track']:
         myPINN.pred_track[N_epochs-1] = myPINN.get_B(myPINN.tracking_data[:,0:1], myPINN.tracking_data[:,1:2], myPINN.tracking_data[:,2:3]).numpy()
-    tf = time.time()
-    dt = tf - t0
+    t_f = time.time()
+    dt = t_f - t0
     dt_min = dt / 60.
     print(f'Training time: {dt:0.1f} s = {dt_min:0.2f}\n')
     # save the model

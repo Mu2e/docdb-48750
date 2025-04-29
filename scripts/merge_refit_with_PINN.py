@@ -52,5 +52,9 @@ def merge_results(model_num, files_dict):
 
 
 if __name__=='__main__':
-    for model_num in files_dict.keys():
+    #for model_num in files_dict.keys():
+    for model_num in ['1']:
+    # for model_num in ['5']:
+    # for model_num in ['8']:
+    # for model_num in ['10']:
         df_meas, df_test = merge_results(model_num, files_dict)

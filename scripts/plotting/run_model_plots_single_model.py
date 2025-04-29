@@ -95,11 +95,16 @@ if __name__=='__main__':
     # data
     print('df_meas')
     profile_fit_fig_dict = {}
-    q_strings = ['(X==-0.8) & (Y==0.0)', '(X==0.8) & (Y==0.0)', '(Y==0.0) & (Z==8.40)']
+    #q_strings = ['(X==-0.8) & (Y==0.0)', '(X==0.8) & (Y==0.0)', '(Y==0.0) & (Z==8.40)']
+    # keep Z that's in all scenarios (sparser Z)
+    q_strings = ['(X==-0.8) & (Y==0.0)', '(X==0.8) & (Y==0.0)', '(Y==0.0) & (Z==8.45)']
+    # q_strings = ['(X==-0.8) & (Y==0.0)', '(X==0.8) & (Y==0.0)', '(Y==0.0) & (8.4149 <= Z <= 8.4151)']
     x_list = ['Z', 'Z', 'X']
     fname_suffs = ['_X_m0p8_Y_0p0', '_X_0p8_Y_0p0', '_Y_0p0_Z_8p4']
     for tup in zip(q_strings, x_list, fname_suffs):
         q_str, x, fname_suff = tup
+        # DEBUG
+        print(f'q_str={q_str}')
         _ = make_fit_data_profile(df_meas, df_test, x=x, q_str=q_str, title_suff='',
                                   fname_suff=fname_suff, noise=noise, plotdir=plotdir,
                                   model_num=model_num)
