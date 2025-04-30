@@ -26,10 +26,12 @@ i = 0
 for L in N_layer_tests:
     for N in N_nodes_tests:
         model_num = f'1_{i}'
-        #opt_dict[model_num] = {'N_hidden': L, 'N_nodes': N, 'activ': 'x_sin2x', 'snake_a': 5.0, 'LR_init': 0.002, 'N_f': 50000, 'initializer_lim': 0.05}
+        opt_dict[model_num] = {'N_hidden': L, 'N_nodes': N, 'activ': 'x_sin2x', 'snake_a': 5.0, 'LR_init': 0.002, 'N_f': 50000, 'initializer_lim': 0.05}
         #opt_dict[model_num] = {'N_hidden': L, 'N_nodes': N, 'activ': 'x_sin2x', 'snake_a': 2.0, 'LR_init': 0.002, 'N_f': 50000, 'initializer_lim': 0.05}
-        opt_dict[model_num] = {'N_hidden': L, 'N_nodes': N, 'activ': 'x_sin2x', 'snake_a': 2.0, 'LR_init': 0.002, 'N_f': 50000}
-        opt_dict[model_num]['initializer_lim'] = (3. / N)**(1./2.)
+        ##opt_dict[model_num] = {'N_hidden': L, 'N_nodes': N, 'activ': 'x_sin2x', 'snake_a': 2.0, 'LR_init': 0.002, 'N_f': 50000}
+        ##opt_dict[model_num]['initializer_lim'] = (3. / N)**(1./2.)
+        #opt_dict[model_num]['initializer_lim'] = 0.05
+        opt_dict[model_num]['initializer_lim'] = 0.15 # 16 nodes
         opt_dict[model_num]['lambda_pretrain'] = 500
         # further tuning after initial tests
         #if i in [9, 12, 13]: # no movement from initial loss
@@ -45,6 +47,19 @@ for L in N_layer_tests:
         if i in [11, 14, 15]: # memory alloc issues
             opt_dict[model_num]['N_f'] = 25000
             #opt_dict[model_num]['LR_init'] = 0.001
+        ### tempering, after further tests below
+        opt_dict[model_num]['lambda_pretrain'] = 0
+        opt_dict[model_num]['lambda_'] = 0.001
+        opt_dict[model_num]['lambda_N_wait'] = 250
+        opt_dict[model_num]['lambda_start_temper'] = 1000
+        opt_dict[model_num]['lambda_mult_factor'] = 1.25
+        opt_dict[model_num]['lambda_add_factor'] = 0.001
+        opt_dict[model_num]['lambda_max'] = 0.1
+        opt_dict[model_num]['LR_patience'] = 300 # default = 300
+        opt_dict[model_num]['Stop_patience'] = 5000 # default = 3000
+        opt_dict[model_num]['LR_min'] = 5e-5 # default = 1e-8
+        opt_dict[model_num]['Stop_monitor'] = 'Loss_val'
+        opt_dict[model_num]['LR_monitor'] = 'Loss'
         i += 1
 # after determining best L and N
 # optimize snake "a"
@@ -101,7 +116,7 @@ for lambda_ in [0.0, 0.1, 0.001, 0.001, 0.001, 0.0001]: # TESTING
         #opt_dict[model_num]['lambda_start_temper'] = 1000
         # opt_dict[model_num]['lambda_start_temper'] = 0
         opt_dict[model_num]['lambda_start_temper'] = 1000
-        opt_dict[model_num]['lambda_mult_factor'] = 1.0
+        #opt_dict[model_num]['lambda_mult_factor'] = 1.0
         #opt_dict[model_num]['lambda_mult_factor'] = 2.0
         opt_dict[model_num]['lambda_mult_factor'] = 1.25
         # opt_dict[model_num]['lambda_add_factor'] = 0.0
@@ -111,19 +126,20 @@ for lambda_ in [0.0, 0.1, 0.001, 0.001, 0.001, 0.0001]: # TESTING
         # opt_dict[model_num]['lambda_add_factor'] = 0.005
         opt_dict[model_num]['lambda_add_factor'] = 0.001
         # opt_dict[model_num]['lambda_add_factor'] = 0.1
-        opt_dict[model_num]['lambda_max'] = 0.2
-        # opt_dict[model_num]['lambda_max'] = 0.1
+        # opt_dict[model_num]['lambda_max'] = 0.2
+        opt_dict[model_num]['lambda_max'] = 0.1
         #opt_dict[model_num]['LR_patience'] = 20000 # default = 300
         # opt_dict[model_num]['LR_patience'] = 150 # default = 300
-        # opt_dict[model_num]['LR_patience'] = 300 # default = 300
+        opt_dict[model_num]['LR_patience'] = 300 # default = 300
         # opt_dict[model_num]['LR_patience'] = 400 # default = 300
-        opt_dict[model_num]['LR_patience'] = 600 # default = 300
+        # opt_dict[model_num]['LR_patience'] = 600 # default = 300
         ###opt_dict[model_num]['LR_patience'] = 1000 # default = 300
-        opt_dict[model_num]['LR_patience'] = 5000 # default = 3000
+        opt_dict[model_num]['Stop_patience'] = 5000 # default = 3000
+        opt_dict[model_num]['LR_min'] = 5e-5 # default = 1e-8
         # monitor something other than "Loss", e.g. "Loss_val" or "Loss_B"
-        opt_dict[model_num]['LR_monitor'] = 'Loss_val'
+        # opt_dict[model_num]['LR_monitor'] = 'Loss_val'
         opt_dict[model_num]['Stop_monitor'] = 'Loss_val'
-        # opt_dict[model_num]['LR_monitor'] = 'Loss'
+        opt_dict[model_num]['LR_monitor'] = 'Loss'
         # opt_dict[model_num]['Stop_monitor'] = 'Loss'
     i += 1
 

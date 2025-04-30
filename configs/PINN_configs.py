@@ -134,7 +134,7 @@ for i in range(N_opt_tests):
     #    NN_config_dict[model_num]['lambda_'] = opt_['lambda_']
     # many optional params
     for k in ['lambda_', 'lambda_N_wait', 'lambda_start_temper', 'lambda_mult_factor', 'lambda_add_factor',
-    'lambda_max', 'LR_patience', 'Stop_monitor', 'LR_monitor', 'Stop_patience']:
+    'lambda_max', 'LR_patience', 'Stop_monitor', 'LR_monitor', 'Stop_patience', 'LR_min']:
         if k in opt_.keys():
             NN_config_dict[model_num][k] = opt_[k]
 

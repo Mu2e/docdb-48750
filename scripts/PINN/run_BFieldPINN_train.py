@@ -19,6 +19,7 @@ from BFieldPINN.tools import (
     prep_PINN_inputs,
     load_and_process_FMS_fit_data,
     construct_normalizations_dict,
+    make_wb_dict,
     #world_to_NN,
     #NN_to_world,
     #add_points_for_J,
@@ -90,6 +91,8 @@ if __name__=='__main__':
     # set up callbacks
     callbacks = get_callback_list(myPINN, NN_config_dict[model_num])
     print(myPINN.summary())
+    # get initial weights
+    wb_dict_init = make_wb_dict(myPINN)
     # train!
     t0 = time.time()
     history_callback = myPINN.fit((init_config['x_u'], init_config['y_u'], init_config['z_u']),
@@ -102,6 +105,8 @@ if __name__=='__main__':
     dt = t_f - t0
     dt_min = dt / 60.
     print(f'Training time: {dt:0.1f} s = {dt_min:0.2f}\n')
+    # get trained weights
+    wb_dict_train = make_wb_dict(myPINN)
     # save the model
     print('Saving the trained model...')
     model_fname = files_dict[model_num]['model_fname']
@@ -109,6 +114,9 @@ if __name__=='__main__':
         os.makedirs(model_fname)
     print(f'myPINN.save_model: {model_fname}')
     myPINN.save_model(model_fname)
+    # weights and biases dictionaries
+    pkl.dump(wb_dict_init, open(model_fname+'/wb_dict_init.pkl', 'wb'))
+    pkl.dump(wb_dict_train, open(model_fname+'/wb_dict_trained.pkl', 'wb'))
     # save history
     sname = model_fname+'/history.pkl'
     print(f'history_callback.history: {sname}')
