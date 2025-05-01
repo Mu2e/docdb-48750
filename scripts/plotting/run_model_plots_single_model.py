@@ -64,7 +64,8 @@ if __name__=='__main__':
     parsed_history = create_dict_from_history(history)
     plot_dict = make_plots_history_vs_epoch(parsed_history, plotdir, model_num)
     print('Done.\n')
-    if has_full:
+    ###if has_full:
+    if False:
         #### input data & test profile
         print('Making input profile plots...')
         _ = make_input_data_profile(df_meas, df_test, q_str='(X == -0.8) & (Y == 0.0)',
@@ -164,6 +165,7 @@ if __name__=='__main__':
         Nbins_b = 50
     _ = make_weights_and_biases_plot(wb_dict_init, wb_dict_trained,
                                      Nbins_w=Nbins_w, Nbins_b=Nbins_b,
+                                     ylim_bias=True,
                                      title=None, make_title=False,
                                      plotdir=plotdir, model_num=model_num)
     wb_fig_dict = _

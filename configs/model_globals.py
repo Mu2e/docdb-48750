@@ -31,8 +31,13 @@ for L in N_layer_tests:
         ##opt_dict[model_num] = {'N_hidden': L, 'N_nodes': N, 'activ': 'x_sin2x', 'snake_a': 2.0, 'LR_init': 0.002, 'N_f': 50000}
         ##opt_dict[model_num]['initializer_lim'] = (3. / N)**(1./2.)
         #opt_dict[model_num]['initializer_lim'] = 0.05
-        opt_dict[model_num]['initializer_lim'] = 0.15 # 16 nodes
+        # opt_dict[model_num]['initializer_lim'] = 0.15 # 16 nodes
+        opt_dict[model_num]['initializer_lim'] = 0.11 # 16 nodes, using heuristic, x0.7
+        #opt_dict[model_num]['initializer_lim'] = 0.126 # 16 nodes, using heuristic, x0.8
+        # opt_dict[model_num]['initializer_lim'] = 0.157 # 16 nodes, using heuristic, x1.0
         opt_dict[model_num]['lambda_pretrain'] = 500
+        # opt_dict[model_num]['LR_init'] = 0.004 # 1_0 tests
+        opt_dict[model_num]['LR_init'] = 0.01 # 1_0 tests
         # further tuning after initial tests
         #if i in [9, 12, 13]: # no movement from initial loss
         #if i in [9]: # no movement from initial loss
@@ -50,10 +55,16 @@ for L in N_layer_tests:
         ### tempering, after further tests below
         opt_dict[model_num]['lambda_pretrain'] = 0
         opt_dict[model_num]['lambda_'] = 0.001
-        opt_dict[model_num]['lambda_N_wait'] = 250
-        opt_dict[model_num]['lambda_start_temper'] = 1000
-        opt_dict[model_num]['lambda_mult_factor'] = 1.25
-        opt_dict[model_num]['lambda_add_factor'] = 0.001
+        # opt_dict[model_num]['lambda_'] = 0.0001
+        ##opt_dict[model_num]['lambda_N_wait'] = 250
+        opt_dict[model_num]['lambda_N_wait'] = 3
+        ##opt_dict[model_num]['lambda_start_temper'] = 1000
+        opt_dict[model_num]['lambda_start_temper'] = 1250
+        # opt_dict[model_num]['lambda_start_temper'] = 1500
+        ##opt_dict[model_num]['lambda_mult_factor'] = 1.25
+        opt_dict[model_num]['lambda_mult_factor'] = 1.0
+        ##opt_dict[model_num]['lambda_add_factor'] = 0.001
+        opt_dict[model_num]['lambda_add_factor'] = 0.0001
         opt_dict[model_num]['lambda_max'] = 0.1
         opt_dict[model_num]['LR_patience'] = 300 # default = 300
         opt_dict[model_num]['Stop_patience'] = 5000 # default = 3000
@@ -89,10 +100,15 @@ i += 1
 for lambda_ in [0.0, 0.1, 0.001, 0.001, 0.001, 0.0001]: # TESTING
 # for lambda_ in [0.0, 0.1, 0.1, 0.001, 0.001, 0.0001]: # TESTING
     model_num = f'1_{i}'
-    #opt_dict[model_num] = opt_dict[model_num] = {'N_hidden': 8, 'N_nodes': 64, 'activ': 'x_sin2x', 'snake_a': 2.0, 'LR_init': 0.002, 'N_f': 50000}
+    # opt_dict[model_num] = opt_dict[model_num] = {'N_hidden': 8, 'N_nodes': 64, 'activ': 'x_sin2x', 'snake_a': 2.0, 'LR_init': 0.002, 'N_f': 50000}
     opt_dict[model_num] = opt_dict[model_num] = {'N_hidden': 8, 'N_nodes': 64, 'activ': 'x_sin2x', 'snake_a': 5.0, 'LR_init': 0.002, 'N_f': 50000}
     # opt_dict[model_num]['initializer_lim'] = (3. / N)**(1./2.)
-    opt_dict[model_num]['initializer_lim'] = 0.05
+    ##opt_dict[model_num]['initializer_lim'] = 0.05 # a=5
+    #opt_dict[model_num]['initializer_lim'] = 0.0785 # a=5 using heuristic
+    opt_dict[model_num]['initializer_lim'] = 0.055 # a=5 using heuristic * 0.7
+    #opt_dict[model_num]['initializer_lim'] = 0.137 # a=2 using heuristic * 0.7
+    # opt_dict[model_num]['initializer_lim'] = 0.069 # a=2, D=2 using heuristic * 0.7
+    # opt_dict[model_num]['initializer_lim'] = 0.15 # a=2
     opt_dict[model_num]['lambda_pretrain'] = 500
     # opt_dict[model_num]['lambda_pretrain'] = 1250
     opt_dict[model_num]['lambda_'] = lambda_
@@ -103,10 +119,12 @@ for lambda_ in [0.0, 0.1, 0.001, 0.001, 0.001, 0.0001]: # TESTING
         #opt_dict[model_num]['LR_init'] = 0.01
         opt_dict[model_num]['LR_init'] = 0.002
         # opt_dict[model_num]['LR_init'] = 0.001
+        # opt_dict[model_num]['LR_init'] = 0.01 # 1_0 tests -- try on 1_28 (nominal network) --> BAD
         # opt_dict[model_num]['lambda_N_wait'] = 100000
         #opt_dict[model_num]['lambda_N_wait'] = 1000
         # opt_dict[model_num]['lambda_N_wait'] = 100
-        opt_dict[model_num]['lambda_N_wait'] = 250
+        ###opt_dict[model_num]['lambda_N_wait'] = 250
+        opt_dict[model_num]['lambda_N_wait'] = 3
         # opt_dict[model_num]['lambda_N_wait'] = 300
         # opt_dict[model_num]['lambda_N_wait'] = 500
         # opt_dict[model_num]['lambda_N_wait'] = 1 # rapid temper -- similar to pretraining
@@ -115,16 +133,18 @@ for lambda_ in [0.0, 0.1, 0.001, 0.001, 0.001, 0.0001]: # TESTING
         # opt_dict[model_num]['lambda_start_temper'] = 100000
         #opt_dict[model_num]['lambda_start_temper'] = 1000
         # opt_dict[model_num]['lambda_start_temper'] = 0
-        opt_dict[model_num]['lambda_start_temper'] = 1000
-        #opt_dict[model_num]['lambda_mult_factor'] = 1.0
+        #opt_dict[model_num]['lambda_start_temper'] = 1000
+        opt_dict[model_num]['lambda_start_temper'] = 1250
+        opt_dict[model_num]['lambda_mult_factor'] = 1.0
         #opt_dict[model_num]['lambda_mult_factor'] = 2.0
-        opt_dict[model_num]['lambda_mult_factor'] = 1.25
+        ###opt_dict[model_num]['lambda_mult_factor'] = 1.25
         # opt_dict[model_num]['lambda_add_factor'] = 0.0
         #opt_dict[model_num]['lambda_add_factor'] = 0.05
         # opt_dict[model_num]['lambda_add_factor'] = 0.01
         #opt_dict[model_num]['lambda_add_factor'] = 0.002
         # opt_dict[model_num]['lambda_add_factor'] = 0.005
-        opt_dict[model_num]['lambda_add_factor'] = 0.001
+        #opt_dict[model_num]['lambda_add_factor'] = 0.001
+        opt_dict[model_num]['lambda_add_factor'] = 0.0001
         # opt_dict[model_num]['lambda_add_factor'] = 0.1
         # opt_dict[model_num]['lambda_max'] = 0.2
         opt_dict[model_num]['lambda_max'] = 0.1
