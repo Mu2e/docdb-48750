@@ -1,0 +1,31 @@
+\begin{table}[htbp!]
+\center
+\caption{A hyperparameter scan over the activation function used at each node of the hidden layers to determine the optimal scalar 
+PINN network structure for the nominal Mu2e DS dataset.
+The hyperparameter $\lambda=0.1$ is set in each test, and the number of hidden layers and nodes per hidden layer are set to their
+optimal values of $8$ and $64$ respectively. The results are relatively insensitive to snake parameter $a$,
+thus we select a value of $a=2$, which is close the minimum loss and provides the best divergence properties.
+This selection is denoted by the row shaded in green. We observe that for $a$ values that are either too small or too
+large, the optimizer fails to draw the weights and biases significantly away from zero. Additionally, we find that the choice
+of the snake activation function leads to better total loss with a factor of $10$ improvement in the divergence loss.}
+\begin{tabular}{l|c||c|c|c|c|c}
+Activation Function & $a$ (snake only) & $L_{PINN}$ & $L_B$ & $L_{\nabla \cdot B}$ & $L_{val}$ & Runtime (m) \\\hline
+ Snake &  $0.5$ & $0.1886$ & $0.1886$ & $0.0000$ & $0.1921$ & $22$\\
+\hline
+ Snake &  $1.0$ & $0.1885$ & $0.1885$ & $0.0000$ & $0.1922$ & $18$\\
+\hline
+\cellcolor{green!30} Snake & \cellcolor{green!30} $2.0$ & \cellcolor{green!30}$0.0915$ &\cellcolor{green!30} $0.0912$ &\cellcolor{green!30} $0.0022$ &\cellcolor{green!30} $0.0915$ &\cellcolor{green!30} $47$\\
+\hline
+ Snake &  $5.0$ & $0.0915$ & $0.0913$ & $0.0027$ & $0.0916$ & $47$\\
+\hline
+ Snake &  $10.0$ & $0.0913$ & $0.0910$ & $0.0032$ & $0.0914$ & $47$\\
+\hline
+ Snake &  $20.0$ & $0.0933$ & $0.0923$ & $0.0107$ & $0.0924$ & $47$\\
+\hline
+ Snake &  $50.0$ & $0.1808$ & $0.1705$ & $0.1034$ & $0.1727$ & $47$\\
+\hline
+ $\tanh$ &  -- & $0.0955$ & $0.0934$ & $0.0205$ & $0.0935$ & $15$\\
+\hline
+\end{tabular}
+\label{tab:hyperparam_opt_activation}
+\end{table}

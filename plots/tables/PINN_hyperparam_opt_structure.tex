@@ -1,0 +1,21 @@
+\begin{table}[htbp!]
+\center
+\caption{A hyperparameter scan over the number of hidden layers and number of nodese per hidden layer
+to determine the optimal scalar PINN network structure for the nominal Mu2e DS dataset.
+The hyperparameter $\lambda=0.1$ is set in each test. In each case the snake activation function with $a=2$ is
+used at each node. The optimal structure is marked by a shaded green box. Any test where the GPU memory was exceeded is marked by a 
+shaded red box and is considered unsuccessful. In these cases
+an additional test with half the number of collocation points was run to try to soothe the problem, unsuccessfully.}
+\begin{tabular}{l|c|c|c|c}
+\backslashbox{Nodes}{Layers} & $2$ & $4$ & $8$ & $10$ \\
+\hline
+$16$ &  \makecell[r]{ $L_{PINN} = 0.1233$ \\ $L_B = 0.1157$ \\ $L_{\nabla \cdot B} = 0.0765$ \\ $L_{val}$ = 0.1162\\ Runtime$ = 2$ m} &  \makecell[r]{ $L_{PINN} = 0.1093$ \\ $L_B = 0.1077$ \\ $L_{\nabla \cdot B} = 0.0161$ \\ $L_{val}$ = 0.1068\\ Runtime$ = 7$ m} &  \makecell[r]{ $L_{PINN} = 0.1146$ \\ $L_B = 0.1089$ \\ $L_{\nabla \cdot B} = 0.0563$ \\ $L_{val}$ = 0.1101\\ Runtime$ = 14$ m} &  \makecell[r]{ $L_{PINN} = 0.1205$ \\ $L_B = 0.1129$ \\ $L_{\nabla \cdot B} = 0.0761$ \\ $L_{val}$ = 0.1144\\ Runtime$ = 17$ m} \\
+\hline
+$32$ &  \makecell[r]{ $L_{PINN} = 0.1106$ \\ $L_B = 0.1071$ \\ $L_{\nabla \cdot B} = 0.0342$ \\ $L_{val}$ = 0.1065\\ Runtime$ = 6$ m} &  \makecell[r]{ $L_{PINN} = 0.0953$ \\ $L_B = 0.0944$ \\ $L_{\nabla \cdot B} = 0.0089$ \\ $L_{val}$ = 0.0941\\ Runtime$ = 12$ m} &  \makecell[r]{ $L_{PINN} = 0.0930$ \\ $L_B = 0.0924$ \\ $L_{\nabla \cdot B} = 0.0057$ \\ $L_{val}$ = 0.0925\\ Runtime$ = 25$ m} &  \makecell[r]{ $L_{PINN} = 0.0951$ \\ $L_B = 0.0943$ \\ $L_{\nabla \cdot B} = 0.0082$ \\ $L_{val}$ = 0.0943\\ Runtime$ = 31$ m} \\
+\hline
+$64$ &  \makecell[r]{ $L_{PINN} = 0.1073$ \\ $L_B = 0.1043$ \\ $L_{\nabla \cdot B} = 0.0307$ \\ $L_{val}$ = 0.1037\\ Runtime$ = 11$ m} &  \makecell[r]{ $L_{PINN} = 0.0928$ \\ $L_B = 0.0924$ \\ $L_{\nabla \cdot B} = 0.0045$ \\ $L_{val}$ = 0.0925\\ Runtime$ = 23$ m} & \cellcolor{green!30} \makecell[r]{ $L_{PINN} = 0.0917$ \\ $L_B = 0.0914$ \\ $L_{\nabla \cdot B} = 0.0027$ \\ $L_{val}$ = 0.0918\\ Runtime$ = 47$ m} &  \cellcolor{red!30} \\
+\hline
+$96$ &  \makecell[r]{ $L_{PINN} = 0.1035$ \\ $L_B = 0.1015$ \\ $L_{\nabla \cdot B} = 0.0206$ \\ $L_{val}$ = 0.1014\\ Runtime$ = 16$ m} &  \makecell[r]{ $L_{PINN} = 0.0925$ \\ $L_B = 0.0922$ \\ $L_{\nabla \cdot B} = 0.0036$ \\ $L_{val}$ = 0.0924\\ Runtime$ = 34$ m} &  \cellcolor{red!30} &  \cellcolor{red!30} 
+\end{tabular}
+\label{tab:hyperparam_opt_structure}
+\end{table}
