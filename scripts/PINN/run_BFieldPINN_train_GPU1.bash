@@ -28,8 +28,9 @@ DEV=1
 # MODELS=("1")
 ## lambda_ optimization / tests (25-30)
 #MODELS=("1_26")
-MODELS=("1_27")
+# MODELS=("1_27")
 # MODELS=("1_0")
+MODELS=("1")
 
 #for i in 2 3;
 for i in "${MODELS[@]}";

@@ -64,8 +64,8 @@ if __name__=='__main__':
     parsed_history = create_dict_from_history(history)
     plot_dict = make_plots_history_vs_epoch(parsed_history, plotdir, model_num)
     print('Done.\n')
-    ###if has_full:
-    if False:
+    if has_full:
+    ###if False: # testing
         #### input data & test profile
         print('Making input profile plots...')
         _ = make_input_data_profile(df_meas, df_test, q_str='(X == -0.8) & (Y == 0.0)',

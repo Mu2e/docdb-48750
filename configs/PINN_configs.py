@@ -26,9 +26,10 @@ base_NN_dict = {
     # 'lambda_': 0.1, 'N_f': 50000, 'reg': 0.0, 'initializer_type': 'uniform',
     'lambda_': 0.001, 'N_f': 50000, 'reg': 0.0, 'initializer_type': 'uniform',
     #'initializer_lim': 0.1,
-    'initializer_lim': 0.05, # a=5
+    #'initializer_lim': 0.05, # a=5
     # 'initializer_lim': 0.15, # a=2
     # 'initializer_lim': 0.01,
+    'initializer_lim': 0.055, # a=5, heuristic * 0.7
     #'initializer_lim': (3. / 64.)**(1./2.),
     # seeds
     #'initializer_seed': 1111,
@@ -58,7 +59,8 @@ base_NN_dict = {
     # linear temper
     'lambda_pretrain': 0, 'lambda_N_wait': 3, 'lambda_mult_factor': 1.0, 'lambda_add_factor': 0.0001,
     # 'lambda_start_temper': 1000, 'lambda_max': 0.2,
-    'lambda_start_temper': 1000, 'lambda_max': 0.1,
+    ##'lambda_start_temper': 1000, 'lambda_max': 0.1,
+    'lambda_start_temper': 1250, 'lambda_max': 0.1,
     # false pretrain
     # 'lambda_pretrain': 0, 'lambda_N_wait': 1, 'lambda_mult_factor': 1.0, 'lambda_add_factor': 0.099,
     # 'lambda_start_temper': 1250, 'lambda_max': 0.1,
