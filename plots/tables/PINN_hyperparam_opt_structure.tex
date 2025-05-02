@@ -2,7 +2,7 @@
 \center
 \caption{A hyperparameter scan over the number of hidden layers and number of nodese per hidden layer
 to determine the optimal scalar PINN network structure for the nominal Mu2e DS dataset.
-The hyperparameter $\lambda=0.1$ is set in each test. In each case the snake activation function with $a=2$ is
+The hyperparameter $\lambda=0.1$ is set in each test. In each case the DELTAsnake activation function with $f=0.5$, $a=2$, and $D=1$ is
 used at each node. The optimal structure is marked by a shaded green box. Any test where the GPU memory was exceeded is marked by a 
 shaded red box and is considered unsuccessful. In these cases
 an additional test with half the number of collocation points was run to try to soothe the problem, unsuccessfully.}
