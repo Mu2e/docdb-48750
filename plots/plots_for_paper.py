@@ -10,7 +10,7 @@ from LSQ_configs import LSQ_config_dict
 # common plots to start
 #plots_for_all =  [f'{B}_RZ_Z4.200_Z13.900_Phi{phi}_{fit}_heat.pdf' for B in ['Br', 'Bphi', 'Bz'] for phi in ['0.00'] for fit in ['LSQfit', 'PINNfit', 'LSQ2fit', 'FullModel']]
 plots_for_all =  [f'{B}_RZ_Z4.200_Z13.900_Phi{phi}_{fit}_heat.pdf' for B in ['Br', 'Bphi', 'Bz'] for phi in ['0.00'] for fit in ['LSQfit', 'PINNfit', 'FullModel']]
-plots_for_all += ['logLoss_vs_Epoch.pdf', 'residual_dBz_1D_hist_df_test.pdf', 'residual_dBz_1D_hist_df_meas.pdf', 'NN_dBz_vs_Z_X_m0p8_Y_0p0.pdf', 'NN_dBz_vs_X_Y_0p0_Z_8p4.pdf']
+plots_for_all += ['logLoss_vs_Epoch.pdf', 'residual_dBz_1D_hist_df_test.pdf', 'residual_dBz_1D_hist_df_meas.pdf', 'NN_dBz_vs_Z_X_m0p8_Y_0p0.pdf', 'NN_dBz_vs_X_Y_0p0_Z_8p4.pdf', 'NN_dBr_vs_Z_X_m0p8_Y_0p0.pdf', 'NN_dBphi_vs_Z_X_m0p8_Y_0p0.pdf']
 
 model_plots_for_paper = {}
 for model_num in LSQ_config_dict.keys():
