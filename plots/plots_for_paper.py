@@ -18,7 +18,7 @@ for model_num in LSQ_config_dict.keys():
 
 # additions
 # 1: more cohesive set of plots
-model_plots_for_paper['1'] += ['1_LR_vs_Epoch.pdf', '1_lambda_vs_Epoch.pdf', '1_residual_dBr_1D_hist_df_test.pdf', '1_residual_dBphi_1D_hist_df_test.pdf', '1_residual_dBr_1D_hist_df_meas.pdf', '1_residual_dBphi_1D_hist_df_meas.pdf', '1_derivs_curlB_z_1D_hist_with_numerical_with_exact_df_test.pdf', '1_derivs_divB_1D_hist_with_numerical_with_exact_df_test.pdf', '1_NN_dBz_vs_Z_X_0p8_Y_0p0.pdf']
+model_plots_for_paper['1'] += ['1_LR_vs_Epoch.pdf', '1_lambda_vs_Epoch.pdf', '1_residual_dBr_1D_hist_df_test.pdf', '1_residual_dBphi_1D_hist_df_test.pdf', '1_residual_dBr_1D_hist_df_meas.pdf', '1_residual_dBphi_1D_hist_df_meas.pdf', '1_derivs_curlB_z_1D_hist_with_numerical_with_exact_df_test.pdf', '1_derivs_divB_1D_hist_with_numerical_with_exact_df_test.pdf', '1_NN_dBz_vs_Z_X_0p8_Y_0p0.pdf', '1_wb_plot.pdf', '1_wb_plot_logy.pdf']
 model_plots_for_paper['1'] += [f'1_{B}_RZ_Z4.200_Z13.900_Phi{phi}_{fit}_heat.pdf' for B in ['Br', 'Bphi', 'Bz'] for phi in ['0.00'] for fit in ['LSQ2fit']]
 model_plots_for_paper['1'] += [f'1_{B}_RZ_Z4.200_Z13.900_Phi{phi}_{fit}_heat.pdf' for B in ['Br', 'Bphi', 'Bz'] for phi in ['1.57'] for fit in ['FullModel']]
 # 2: div + curl, for comparison to 1
