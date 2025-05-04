@@ -26,7 +26,8 @@ DEV=2
 # MODELS=("1_24") # tanh
 ## lambda_ optimization / tests (25-30)
 #MODELS=("1_27" "1_29")
-MODELS=("1_28")
+#MODELS=("1_28")
+MODELS=("4")
 
 #for i in 4 6;
 #for i in 6;

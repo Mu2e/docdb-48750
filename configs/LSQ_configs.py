@@ -311,7 +311,7 @@ cfg_data_test_ps4 = cfg_data('helicalc', 'DS', mapfile_test_ps4,
 #                          noise=noise, z0=z0, AB_lim=None, k_lim=None)
 ## FIXME! This is just for testing various parameter configurations for PINN paper
 cfg_params4 = cfg_params(pitch1=0, ms_h1=0, ns_h1=0, pitch2=0, ms_h2=0, ns_h2=0,
-                         length1=12.5, ms_c1=55, ns_c1=9, length2=0, ms_c2=0, ns_c2=0,
+                         length1=12.5, ms_c1=55, ns_c1=7, length2=0, ms_c2=0, ns_c2=0,
                          ks_dict={'k1': [mean_fields_dict['nominal']['Bx'], True],
                                   'k2': [mean_fields_dict['nominal']['By'], True],
                                   'k3': [mean_fields_dict['nominal']['Bz'], False],

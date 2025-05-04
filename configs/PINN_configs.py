@@ -176,8 +176,8 @@ NN_config_dict['1']['N_f'] = 30000 # def: 50000
 ### Extra customizations. See commented example
 # NN_config_dict['5']['epochs'] = 20000
 # standard PINN
-NN_config_dict['2']['LR_init'] = 0.001
-NN_config_dict['2']['LR_patience'] = 200
+####NN_config_dict['2']['LR_init'] = 0.001
+####NN_config_dict['2']['LR_patience'] = 200
 # phony curl
 # ORIG
 '''
@@ -187,11 +187,11 @@ NN_config_dict['4']['LR_init'] = 0.001
 NN_config_dict['4']['LR_patience'] = 200
 '''
 # TESTING
-NN_config_dict['4']['NN_type'] = 'Standard'
-NN_config_dict['4']['lambda_'] = 0.0
-NN_config_dict['4']['lambda_pretrain'] = 0
-NN_config_dict['4']['N_f'] = 1000 # small sample to look at div and curl throughout training
-NN_config_dict['4']['N_hidden'] = 4 # def: 8
+# NN_config_dict['4']['NN_type'] = 'Standard'
+# NN_config_dict['4']['lambda_'] = 0.0
+# NN_config_dict['4']['lambda_pretrain'] = 0
+# NN_config_dict['4']['N_f'] = 1000 # small sample to look at div and curl throughout training
+# NN_config_dict['4']['N_hidden'] = 4 # def: 8
 # debuging 6 (busbars only)
 #NN_config_dict['6']['lambda_'] = 0.0
 #NN_config_dict['6']['N_f'] = 2
