@@ -55,6 +55,11 @@ if __name__=='__main__':
         full = files_dict[model_num]['full']
         df_meas = pd.read_pickle(full['meas'])
         df_test = pd.read_pickle(full['test'])
+    # HERE!
+    # add df_test custom for the derivative plots
+    save = files_dict[model_num]['save']
+    df_meas_s = pd.read_pickle(save['meas'])
+    df_test_s = pd.read_pickle(save['test'])
     # make plot dirs if they don't exist
     plotdir, trackdir = check_plot_dir(model_fname)
     # history load
@@ -64,6 +69,51 @@ if __name__=='__main__':
     parsed_history = create_dict_from_history(history)
     plot_dict = make_plots_history_vs_epoch(parsed_history, plotdir, model_num)
     print('Done.\n')
+    #### derivatives histograms
+    print('Making derivatives histograms...')
+    for tup in zip([df_test_s], [' (Test Dataset)'], ['_df_test'], [200]):
+    #for tup in zip([df_test_s, df_meas_s], [' (Test Dataset)', ' (Measured Dataset)'], ['_df_test', '_df_meas'], [200, 150]):
+        df_, title_suff, fname_suff, nbins = tup
+        _ = make_deriv_1D_hist(df_, bin_numerical=True, nbins=nbins, title_suff=title_suff,
+                               include_numerical=True, include_exact=True,
+                               fname_suff=fname_suff, plotdir=plotdir,
+                               model_num=model_num)
+        derivs_fig_dict = _
+    print('Done.\n')
+    #### fit profiles
+    print('Making fit profiles...')
+    # data
+    print('df_meas')
+    profile_fit_fig_dict = {}
+    #q_strings = ['(X==-0.8) & (Y==0.0)', '(X==0.8) & (Y==0.0)', '(Y==0.0) & (Z==8.40)']
+    # keep Z that's in all scenarios (sparser Z)
+    q_strings = ['(X==-0.8) & (Y==0.0)', '(X==0.8) & (Y==0.0)', '(Y==0.0) & (Z==8.45)']
+    # q_strings = ['(X==-0.8) & (Y==0.0)', '(X==0.8) & (Y==0.0)', '(Y==0.0) & (8.4149 <= Z <= 8.4151)']
+    x_list = ['Z', 'Z', 'X']
+    fname_suffs = ['_X_m0p8_Y_0p0', '_X_0p8_Y_0p0', '_Y_0p0_Z_8p4']
+    for tup in zip(q_strings, x_list, fname_suffs):
+        q_str, x, fname_suff = tup
+        # DEBUG
+        print(f'q_str={q_str}')
+        _ = make_fit_data_profile(df_meas_s, df_test_s, x=x, q_str=q_str, title_suff='',
+                                  fname_suff=fname_suff, noise=noise, plotdir=plotdir,
+                                  model_num=model_num)
+        profile_fit_fig_dict[x] = _
+    # test
+    print('df_test')
+    profile_fit_fig_dict_test = {}
+    #q_strings = ['(X==-0.8) & (Y==0.0)', '(Y==0.0) & (Z==8.40)']
+    #x_list = ['Z', 'X']
+    #fname_suffs = ['_X_m0p8_Y_0p0_df_test', '_Y_0p0_Z_8p4_df_test']
+    for tup in zip(q_strings, x_list, fname_suffs):
+        q_str, x, fname_suff = tup
+        _ = make_fit_data_profile(df_test_s, df_test_s, x=x, q_str=q_str,
+                                  title_suff=' (Test Dataset)',
+                                  fname_suff=fname_suff+'_df_test', noise=None,
+                                  plotdir=plotdir, model_num=model_num)
+        profile_fit_fig_dict_test[x] = _
+    ### ADD HISTOGRAM WITHOUT FINAL REFIT -- do better for scaling axes
+    # things that rely on merged dataframes
     if has_full:
     ###if False: # testing
         #### input data & test profile
@@ -89,47 +139,47 @@ if __name__=='__main__':
             residuals_fig_dict[fname_suff[1:]] = _
         print('Done.\n')
         #### derivatives histograms
-        print('Making derivatives histograms...')
-        for tup in zip([df_test], [' (Test Dataset)'], ['_df_test'], [200]):
-            df_, title_suff, fname_suff, nbins = tup
-            _ = make_deriv_1D_hist(df_, bin_numerical=True, nbins=nbins, title_suff=title_suff,
-                                   include_numerical=True, include_exact=True,
-                                   fname_suff=fname_suff, plotdir=plotdir,
-                                   model_num=model_num)
-            derivs_fig_dict = _
-        print('Done.\n')
-        #### fit profiles
-        print('Making fit profiles...')
-        # data
-        print('df_meas')
-        profile_fit_fig_dict = {}
-        #q_strings = ['(X==-0.8) & (Y==0.0)', '(X==0.8) & (Y==0.0)', '(Y==0.0) & (Z==8.40)']
-        # keep Z that's in all scenarios (sparser Z)
-        q_strings = ['(X==-0.8) & (Y==0.0)', '(X==0.8) & (Y==0.0)', '(Y==0.0) & (Z==8.45)']
-        # q_strings = ['(X==-0.8) & (Y==0.0)', '(X==0.8) & (Y==0.0)', '(Y==0.0) & (8.4149 <= Z <= 8.4151)']
-        x_list = ['Z', 'Z', 'X']
-        fname_suffs = ['_X_m0p8_Y_0p0', '_X_0p8_Y_0p0', '_Y_0p0_Z_8p4']
-        for tup in zip(q_strings, x_list, fname_suffs):
-            q_str, x, fname_suff = tup
-            # DEBUG
-            print(f'q_str={q_str}')
-            _ = make_fit_data_profile(df_meas, df_test, x=x, q_str=q_str, title_suff='',
-                                      fname_suff=fname_suff, noise=noise, plotdir=plotdir,
-                                      model_num=model_num)
-            profile_fit_fig_dict[x] = _
-        # test
-        print('df_test')
-        profile_fit_fig_dict_test = {}
-        #q_strings = ['(X==-0.8) & (Y==0.0)', '(Y==0.0) & (Z==8.40)']
-        #x_list = ['Z', 'X']
-        #fname_suffs = ['_X_m0p8_Y_0p0_df_test', '_Y_0p0_Z_8p4_df_test']
-        for tup in zip(q_strings, x_list, fname_suffs):
-            q_str, x, fname_suff = tup
-            _ = make_fit_data_profile(df_test, df_test, x=x, q_str=q_str,
-                                      title_suff=' (Test Dataset)',
-                                      fname_suff=fname_suff+'_df_test', noise=None,
-                                      plotdir=plotdir, model_num=model_num)
-            profile_fit_fig_dict_test[x] = _
+        # print('Making derivatives histograms...')
+        # for tup in zip([df_test], [' (Test Dataset)'], ['_df_test'], [200]):
+        #     df_, title_suff, fname_suff, nbins = tup
+        #     _ = make_deriv_1D_hist(df_, bin_numerical=True, nbins=nbins, title_suff=title_suff,
+        #                            include_numerical=True, include_exact=True,
+        #                            fname_suff=fname_suff, plotdir=plotdir,
+        #                            model_num=model_num)
+        #     derivs_fig_dict = _
+        # print('Done.\n')
+        # #### fit profiles
+        # print('Making fit profiles...')
+        # # data
+        # print('df_meas')
+        # profile_fit_fig_dict = {}
+        # #q_strings = ['(X==-0.8) & (Y==0.0)', '(X==0.8) & (Y==0.0)', '(Y==0.0) & (Z==8.40)']
+        # # keep Z that's in all scenarios (sparser Z)
+        # q_strings = ['(X==-0.8) & (Y==0.0)', '(X==0.8) & (Y==0.0)', '(Y==0.0) & (Z==8.45)']
+        # # q_strings = ['(X==-0.8) & (Y==0.0)', '(X==0.8) & (Y==0.0)', '(Y==0.0) & (8.4149 <= Z <= 8.4151)']
+        # x_list = ['Z', 'Z', 'X']
+        # fname_suffs = ['_X_m0p8_Y_0p0', '_X_0p8_Y_0p0', '_Y_0p0_Z_8p4']
+        # for tup in zip(q_strings, x_list, fname_suffs):
+        #     q_str, x, fname_suff = tup
+        #     # DEBUG
+        #     print(f'q_str={q_str}')
+        #     _ = make_fit_data_profile(df_meas, df_test, x=x, q_str=q_str, title_suff='',
+        #                               fname_suff=fname_suff, noise=noise, plotdir=plotdir,
+        #                               model_num=model_num)
+        #     profile_fit_fig_dict[x] = _
+        # # test
+        # print('df_test')
+        # profile_fit_fig_dict_test = {}
+        # #q_strings = ['(X==-0.8) & (Y==0.0)', '(Y==0.0) & (Z==8.40)']
+        # #x_list = ['Z', 'X']
+        # #fname_suffs = ['_X_m0p8_Y_0p0_df_test', '_Y_0p0_Z_8p4_df_test']
+        # for tup in zip(q_strings, x_list, fname_suffs):
+        #     q_str, x, fname_suff = tup
+        #     _ = make_fit_data_profile(df_test, df_test, x=x, q_str=q_str,
+        #                               title_suff=' (Test Dataset)',
+        #                               fname_suff=fname_suff+'_df_test', noise=None,
+        #                               plotdir=plotdir, model_num=model_num)
+        #     profile_fit_fig_dict_test[x] = _
         #### mu2eplots
         print('Making mu2eplots...')
         mu2eplots_all_dict = {}

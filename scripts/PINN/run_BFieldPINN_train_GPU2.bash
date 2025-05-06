@@ -27,7 +27,8 @@ DEV=2
 ## lambda_ optimization / tests (25-30)
 #MODELS=("1_27" "1_29")
 #MODELS=("1_28")
-MODELS=("4")
+#MODELS=("4")
+MODELS=("8")
 
 #for i in 4 6;
 #for i in 6;

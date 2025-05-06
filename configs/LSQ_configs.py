@@ -5,7 +5,7 @@ import pandas as pd
 from mu2e import mu2e_ext_path
 from mu2e.cfg_defs import cfg_data, cfg_geom, cfg_plot, cfg_params, cfg_pickle
 from mean_fields import get_mean_fields_dict
-from model_globals import noise, noise_str, phony_curl, phony_curl_str, z0, LSQ_config_dict_minimal, N_opt_tests
+from model_globals import noise, noise_str, phony_curl, phony_curl_str, z0, LSQ_config_dict_minimal, N_opt_tests, opt_dict
 
 #### field map locations
 # test / validation points (only one map)
@@ -311,7 +311,8 @@ cfg_data_test_ps4 = cfg_data('helicalc', 'DS', mapfile_test_ps4,
 #                          noise=noise, z0=z0, AB_lim=None, k_lim=None)
 ## FIXME! This is just for testing various parameter configurations for PINN paper
 cfg_params4 = cfg_params(pitch1=0, ms_h1=0, ns_h1=0, pitch2=0, ms_h2=0, ns_h2=0,
-                         length1=12.5, ms_c1=55, ns_c1=7, length2=0, ms_c2=0, ns_c2=0,
+                         #length1=12.5, ms_c1=55, ns_c1=7, length2=0, ms_c2=0, ns_c2=0, # with asymm
+                         length1=12.5, ms_c1=55, ns_c1=1, length2=0, ms_c2=0, ns_c2=0, # without asymm
                          ks_dict={'k1': [mean_fields_dict['nominal']['Bx'], True],
                                   'k2': [mean_fields_dict['nominal']['By'], True],
                                   'k3': [mean_fields_dict['nominal']['Bz'], False],
@@ -356,6 +357,7 @@ cfg_pickle_test4 = cfg_pickle(use_pickle=True, save_pickle=False,
 cfg_pickle_ps4 = cfg_pickle(use_pickle=True, save_pickle=True,
                          load_name=f'docdb-48750/helicalc_Rebar{noise_str}{phony_curl_str}',
                          save_name=f'docdb-48750/helicalc_Rebar{noise_str}{phony_curl_str}_PINN_subtracted', recreate=False)
+                         # save_name=f'docdb-48750/helicalc_Rebar{noise_str}{phony_curl_str}_PINN_subtracted', recreate=True) # CAUTION! Just a test.
 # test, PINN subtracted
 cfg_pickle_ps_test4 = cfg_pickle(use_pickle=True, save_pickle=False,
                                  load_name=f'docdb-48750/helicalc_Rebar{noise_str}{phony_curl_str}_PINN_subtracted',
@@ -758,13 +760,45 @@ LSQ_config_dict = {
 
 # add to model 1 for hyperparam opt
 # FIXME! Be more careful about params -- don't want to overwrite these accidentally
-for i in range(N_opt_tests):
-    model_num = f'1_{i}'
+#for i in range(N_opt_tests):
+#    model_num = f'1_{i}'
+for model_num in opt_dict.keys():
+    i = model_num.split('_')[0]
+    if i == '1':
+        cd_ = cfg_data1
+        cdt_ = cfg_data_test
+        cdp_ = cfg_data_ps1
+        cdtp_ = cfg_data_test_ps1
+        cp_ = cfg_params1
+        cpi_ = cfg_pickle1
+        cpit_ = cfg_pickle_test1
+        cpip_ = cfg_pickle_ps1
+        cpipt_ = cfg_pickle_ps_test1
+    elif i == '4':
+        cd_ = cfg_data4
+        cdt_ = cfg_data_test
+        cdp_ = cfg_data_ps4
+        cdtp_ = cfg_data_test_ps4
+        cp_ = cfg_params4
+        cpi_ = cfg_pickle4
+        cpit_ = cfg_pickle_test4
+        cpip_ = cfg_pickle_ps4
+        cpipt_ = cfg_pickle_ps_test4
+    else:
+        raise ValueError(f'The model_num "{model_num}" is not implemented yet. Please add it and try again.')
+    # LSQ_config_dict[model_num] = {
+    #     'subdir': Lmin[model_num]['subdir'], 'fitnames': Lmin[model_num]['fitnames'],
+    #     'cfg_data': cfg_data1, 'cfg_data_test': cfg_data_test,
+    #     'cfg_data_ps': cfg_data_ps1, 'cfg_data_test_ps': cfg_data_test_ps1,
+    #     'cfg_geom_fit': cfg_geom_cyl, 'cfg_geom_test': cfg_geom_cart,
+    #     'cfg_params': cfg_params1, 'cfg_pickle': cfg_pickle1,
+    #     'cfg_pickle_test': cfg_pickle_test1, 'cfg_pickle_ps': cfg_pickle_ps1,
+    #     'cfg_pickle_test_ps': cfg_pickle_ps_test1}
     LSQ_config_dict[model_num] = {
         'subdir': Lmin[model_num]['subdir'], 'fitnames': Lmin[model_num]['fitnames'],
-        'cfg_data': cfg_data1, 'cfg_data_test': cfg_data_test,
-        'cfg_data_ps': cfg_data_ps1, 'cfg_data_test_ps': cfg_data_test_ps1,
+        'cfg_data': cd_, 'cfg_data_test': cdt_,
+        'cfg_data_ps': cdp_, 'cfg_data_test_ps': cdtp_,
         'cfg_geom_fit': cfg_geom_cyl, 'cfg_geom_test': cfg_geom_cart,
-        'cfg_params': cfg_params1, 'cfg_pickle': cfg_pickle1,
-        'cfg_pickle_test': cfg_pickle_test1, 'cfg_pickle_ps': cfg_pickle_ps1,
-        'cfg_pickle_test_ps': cfg_pickle_ps_test1}
+        'cfg_params': cp_, 'cfg_pickle': cpi_,
+        'cfg_pickle_test': cpit_, 'cfg_pickle_ps': cpip_,
+        'cfg_pickle_test_ps': cpipt_}

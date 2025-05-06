@@ -15,10 +15,17 @@ from plots_for_paper import model_plots_for_paper
 if __name__=='__main__':
     t0 = time.time()
     for model_num, plot_list in model_plots_for_paper.items():
+        # temp!
+        #####
+        #if (not '4' in model_num) and (not '8' in model_num):
+        if (not model_num == '4') and (not model_num == '8'):
+            continue
+        #####
         print(f'Copying plots for model {model_num}...')
         model_fname = files_dict[model_num]['model_fname']
         old_plot_dir = os.path.join(model_fname, 'plots')
         new_plot_dir = os.path.join(plots_dir, LSQ_config_dict[model_num]['subdir'])
+        #print(old_plot_dir, new_plot_dir) # DEBUG
         for pfile in plot_list:
             src_file = os.path.join(old_plot_dir, pfile)
             dst_file = os.path.join(new_plot_dir, pfile)

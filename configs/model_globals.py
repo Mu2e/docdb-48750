@@ -163,6 +163,19 @@ for lambda_ in [0.0, 0.1, 0.001, 0.001, 0.001, 0.0001]: # TESTING
         # opt_dict[model_num]['Stop_monitor'] = 'Loss'
     i += 1
 
+# Standard PINN for Model 4 (phony curl)
+model_num = f'4_0'
+opt_dict[model_num] = opt_dict[model_num] = {'N_hidden': 8, 'N_nodes': 64, 'activ': 'x_sin2x', 'snake_a': 5.0, 'LR_init': 0.002, 'N_f': 50000}
+opt_dict[model_num]['initializer_lim'] = 0.055 # a=5 using heuristic * 0.7
+#opt_dict[model_num]['lambda_'] = 0.0
+#opt_dict[model_num]['lambda_max'] = 0.0
+opt_dict[model_num]['lambda_'] = 0.00001
+opt_dict[model_num]['lambda_max'] = 0.00001
+opt_dict[model_num]['lambda_start_temper'] = 20000
+#opt_dict[model_num]['lambda_pretrain'] = 20000 # --> this will by default leave lambda_=0 and run quicker (no colloc)
+opt_dict[model_num]['lambda_pretrain'] = 0 # --> leaves colloc in, which will be better for diagnosis
+opt_dict[model_num]['NN_type'] = 'Standard'
+
 # calculate number hyperparam tests
 N_opt_tests = len(opt_dict)
 
@@ -203,9 +216,13 @@ LSQ_config_dict_minimal = {
 
 # add to model 1 for hyperparam opt
 # FIXME! Be more careful about fitnames -- don't want to overwrite these accidentally
-for i in range(N_opt_tests):
-    model_num = f'1_{i}'
+#for i in range(N_opt_tests):
+#    model_num = f'1_{i}'
+for model_num in opt_dict.keys():
+    i = model_num.split('_')[0]
+    fnames = LSQ_config_dict_minimal[i]['fitnames']
+    sdir = LSQ_config_dict_minimal[i]['subdir']
     LSQ_config_dict_minimal[model_num] = {
-        'subdir': f'{model_num}_Nominal',
-        'fitnames': {'Initial': 'fma_1_Nominal_fitmap', f'PINN_Subtracted': 'fma_{model_num}_Nominal_PINN_subtracted_fitmap'}
+        'subdir': sdir.replace(i, model_num),
+        'fitnames': {'Initial': fnames['Initial'], f'PINN_Subtracted': fnames['PINN_Subtracted'].replace(i, model_num)}
     }
