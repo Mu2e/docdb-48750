@@ -28,3 +28,5 @@ model_plots_for_paper['2'] += ['2_derivs_curlB_z_1D_hist_with_numerical_with_exa
 model_plots_for_paper['4'] += ['4_NN_dBphi_vs_Z_X_m0p8_Y_0p0.pdf']
 # 8: HPC mag unc
 model_plots_for_paper['8'] += ['8_residual_dBr_1D_hist_df_test.pdf', '8_residual_dBphi_1D_hist_df_test.pdf', '8_residual_dBr_1D_hist_df_meas.pdf', '8_residual_dBphi_1D_hist_df_meas.pdf']
+# 9: sparser measurements
+model_plots_for_paper['9'] += ['9_residual_dBr_1D_hist_df_test.pdf', '9_residual_dBphi_1D_hist_df_test.pdf', '9_residual_dBr_1D_hist_df_meas.pdf', '9_residual_dBphi_1D_hist_df_meas.pdf']

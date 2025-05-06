@@ -113,6 +113,23 @@ if __name__=='__main__':
                                   plotdir=plotdir, model_num=model_num)
         profile_fit_fig_dict_test[x] = _
     ### ADD HISTOGRAM WITHOUT FINAL REFIT -- do better for scaling axes
+    #### residuals histograms
+    print('Making residuals histograms (no final refit)...')
+    residuals_fig_dict = {}
+    for tup in zip([df_test_s, df_meas_s], [' (Test Dataset)', ' (Measured Dataset)'],
+                   ['_df_test', '_df_meas'], [300, 200]):
+        df_, title_suff, fname_suff, nbins = tup
+        if fname_suff == '_df_meas':
+            add_noise_model = True
+        else:
+            add_noise_model = False
+        fname_suff += '_no_refit'
+        _ = make_Bi_residual_1D_hist(df_, bin_orig=True, nbins=nbins, title_suff=title_suff,
+                                     fname_suff=fname_suff, add_noise_model=add_noise_model,
+                                     noise=noise, noise_on_final=True, plotdir=plotdir,
+                                     model_num=model_num)
+        residuals_fig_dict[fname_suff[1:]] = _
+    print('Done.\n')
     # things that rely on merged dataframes
     if has_full:
     ###if False: # testing

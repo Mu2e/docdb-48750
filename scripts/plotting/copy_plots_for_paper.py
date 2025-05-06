@@ -18,7 +18,7 @@ if __name__=='__main__':
         # temp!
         #####
         #if (not '4' in model_num) and (not '8' in model_num):
-        if (not model_num == '4') and (not model_num == '8'):
+        if (not model_num == '4') and (not model_num == '8') and (not model_num == '9'):
             continue
         #####
         print(f'Copying plots for model {model_num}...')

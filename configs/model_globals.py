@@ -176,6 +176,32 @@ opt_dict[model_num]['lambda_start_temper'] = 20000
 opt_dict[model_num]['lambda_pretrain'] = 0 # --> leaves colloc in, which will be better for diagnosis
 opt_dict[model_num]['NN_type'] = 'Standard'
 
+# Standard PINN for Model 8 (HPCMagUnc)
+model_num = f'8_0'
+opt_dict[model_num] = opt_dict[model_num] = {'N_hidden': 8, 'N_nodes': 64, 'activ': 'x_sin2x', 'snake_a': 5.0, 'LR_init': 0.002, 'N_f': 50000}
+opt_dict[model_num]['initializer_lim'] = 0.055 # a=5 using heuristic * 0.7
+#opt_dict[model_num]['lambda_'] = 0.0
+#opt_dict[model_num]['lambda_max'] = 0.0
+opt_dict[model_num]['lambda_'] = 0.00001
+opt_dict[model_num]['lambda_max'] = 0.00001
+opt_dict[model_num]['lambda_start_temper'] = 20000
+#opt_dict[model_num]['lambda_pretrain'] = 20000 # --> this will by default leave lambda_=0 and run quicker (no colloc)
+opt_dict[model_num]['lambda_pretrain'] = 0 # --> leaves colloc in, which will be better for diagnosis
+opt_dict[model_num]['NN_type'] = 'Standard'
+
+# Standard PINN no physics constraints for Model 2 (StandardPINN, nominal)
+model_num = f'2_0'
+opt_dict[model_num] = opt_dict[model_num] = {'N_hidden': 8, 'N_nodes': 64, 'activ': 'x_sin2x', 'snake_a': 5.0, 'LR_init': 0.002, 'N_f': 50000}
+opt_dict[model_num]['initializer_lim'] = 0.055 # a=5 using heuristic * 0.7
+#opt_dict[model_num]['lambda_'] = 0.0
+#opt_dict[model_num]['lambda_max'] = 0.0
+opt_dict[model_num]['lambda_'] = 0.00001
+opt_dict[model_num]['lambda_max'] = 0.00001
+opt_dict[model_num]['lambda_start_temper'] = 20000
+#opt_dict[model_num]['lambda_pretrain'] = 20000 # --> this will by default leave lambda_=0 and run quicker (no colloc)
+opt_dict[model_num]['lambda_pretrain'] = 0 # --> leaves colloc in, which will be better for diagnosis
+opt_dict[model_num]['NN_type'] = 'Standard'
+
 # calculate number hyperparam tests
 N_opt_tests = len(opt_dict)
 

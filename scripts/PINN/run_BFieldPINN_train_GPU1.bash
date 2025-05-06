@@ -32,7 +32,10 @@ DEV=1
 # MODELS=("1_0")
 #MODELS=("1")
 # MODELS=("2")
-MODELS=("4")
+#MODELS=("4")
+#MODELS=("8_0")
+#MODELS=("2_0")
+MODELS=("9")
 
 #for i in 2 3;
 for i in "${MODELS[@]}";

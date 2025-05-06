@@ -311,8 +311,8 @@ cfg_data_test_ps4 = cfg_data('helicalc', 'DS', mapfile_test_ps4,
 #                          noise=noise, z0=z0, AB_lim=None, k_lim=None)
 ## FIXME! This is just for testing various parameter configurations for PINN paper
 cfg_params4 = cfg_params(pitch1=0, ms_h1=0, ns_h1=0, pitch2=0, ms_h2=0, ns_h2=0,
-                         #length1=12.5, ms_c1=55, ns_c1=7, length2=0, ms_c2=0, ns_c2=0, # with asymm
-                         length1=12.5, ms_c1=55, ns_c1=1, length2=0, ms_c2=0, ns_c2=0, # without asymm
+                         length1=12.5, ms_c1=55, ns_c1=7, length2=0, ms_c2=0, ns_c2=0, # with asymm
+                         # length1=12.5, ms_c1=55, ns_c1=1, length2=0, ms_c2=0, ns_c2=0, # without asymm
                          ks_dict={'k1': [mean_fields_dict['nominal']['Bx'], True],
                                   'k2': [mean_fields_dict['nominal']['By'], True],
                                   'k3': [mean_fields_dict['nominal']['Bz'], False],
@@ -784,6 +784,26 @@ for model_num in opt_dict.keys():
         cpit_ = cfg_pickle_test4
         cpip_ = cfg_pickle_ps4
         cpipt_ = cfg_pickle_ps_test4
+    elif i == '8':
+        cd_ = cfg_data8
+        cdt_ = cfg_data_test
+        cdp_ = cfg_data_ps8
+        cdtp_ = cfg_data_test_ps8
+        cp_ = cfg_params8
+        cpi_ = cfg_pickle8
+        cpit_ = cfg_pickle_test8
+        cpip_ = cfg_pickle_ps8
+        cpipt_ = cfg_pickle_ps_test8
+    elif i == '2':
+        cd_ = cfg_data2
+        cdt_ = cfg_data_test
+        cdp_ = cfg_data_ps2
+        cdtp_ = cfg_data_test_ps2
+        cp_ = cfg_params2
+        cpi_ = cfg_pickle2
+        cpit_ = cfg_pickle_test2
+        cpip_ = cfg_pickle_ps2
+        cpipt_ = cfg_pickle_ps_test2
     else:
         raise ValueError(f'The model_num "{model_num}" is not implemented yet. Please add it and try again.')
     # LSQ_config_dict[model_num] = {
