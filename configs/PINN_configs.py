@@ -147,13 +147,13 @@ for model_num in opt_dict.keys():
 
 # for paper
 ## 4: curled field (Scalar PINN)
-NN_config_dict['4']['lambda_pretrain'] = 0
-NN_config_dict['4']['lambda_start_temper'] = 20000
+# NN_config_dict['4']['lambda_pretrain'] = 0
+# NN_config_dict['4']['lambda_start_temper'] = 20000
 ##NN_config_dict['4']['lambda_start_temper'] = 200
 ##NN_config_dict['4']['lambda_max'] = 0.5
 ##NN_config_dict['4']['lambda_add_factor'] = 0.0005
-NN_config_dict['4']['lambda_'] = 0.5
-NN_config_dict['4']['lambda_max'] = 0.5
+# NN_config_dict['4']['lambda_'] = 0.5
+# NN_config_dict['4']['lambda_max'] = 0.5
 # snake
 # NN_config_dict['4']['snake_a'] = 1.0
 # NN_config_dict['4']['initializer_lim'] = (3. / 64.)**(1./2.) # snake recommendation
