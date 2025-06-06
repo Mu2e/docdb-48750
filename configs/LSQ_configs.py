@@ -129,8 +129,9 @@ cfg_params1 = cfg_params(pitch1=0, ms_h1=0, ns_h1=0, pitch2=0, ms_h2=0, ns_h2=0,
                          ms_asym_max=-1, # NOMINAL
                          #version=1006,
                          #version=1007,
-                         version=1008,
+                         version=1008, # FOR PAPER
                          # version=1009, # single unconstrained normalization, phases
+                         ###version=1010, # include k=0 (one additional term: n=1, non-zero Br) No! this model does not have any non-zero terms!
                          noise=noise, z0=z0, AB_lim=None, k_lim=None)
                          # noise=noise, z0=4.215, AB_lim=None, k_lim=None)
 # pickle
