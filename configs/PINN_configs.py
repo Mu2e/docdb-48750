@@ -6,7 +6,7 @@ from LSQ_configs import LSQ_config_dict as LSQ_c
 from BFieldPINN import BFieldPINN_data
 # local imports
 from useful_funcs import is_number
-from model_globals import N_opt_tests, opt_dict, p_eff_dict
+from model_globals import N_opt_tests, opt_dict, p_eff_dict, N_toys_nominal
 
 ### NN configurations
 base_NN_dict = {
@@ -114,6 +114,14 @@ NN_config_dict = {
         **{'model_fname': LSQ_c['10']['fitnames']['Initial'], 'NN_type': 'Scalar'},
     ),
 }
+
+# model 1 toys
+for toy_num in range(N_toys_nominal-1):
+    model_num = f'1_toy_{toy_num}'
+    NN_config_dict[model_num] = dict(
+        deepcopy(base_NN_dict),
+        **{'model_fname': LSQ_c[model_num]['fitnames']['Initial'], 'NN_type': 'Scalar'},
+    )
 
 # add to model 1 for hyperparam opt
 # FIXME! Be more careful about params -- don't want to overwrite these accidentally
@@ -249,8 +257,11 @@ for model_num in NN_config_dict.keys():
     save_meas = os.path.join(model_fname, 'df_meas_NN_Results.p')
     save_meas_full = os.path.join(model_fname, 'df_meas_Full_Results.p')
     infile_meas = outfile_meas.replace('_PINN_Subtracted', '').replace('.Mu2E.p', '.Mu2E.Fit.p')
-    if not is_number(model_num):
+    #if not is_number(model_num):
+    if not is_number(model_num) and 'toy' not in model_num:
         infile_meas = infile_meas.replace(model_num, model_num.split('_')[0])
+    # if 'toy' in model_num:
+    #     infile_meas = infile_meas.replace('')
     if 'p_eff' in model_num:
         i = model_num.split('_')[-1]
         infile_meas = infile_meas.replace('.Mu2E.Fit.p', f'.Mu2E.Fit.p_eff_pert_{i}.p')
@@ -271,7 +282,8 @@ for model_num in NN_config_dict.keys():
         i = model_num.split('_')[-1]
         outfile_meas = outfile_meas.replace('.Mu2E.p', f'.Mu2E.p_eff_pert_{i}.p')
         outfile_test = outfile_test.replace('.Mu2E.p', f'.Mu2E.p_eff_pert_{i}.p')
-    if not is_number(model_num):
+    #if not is_number(model_num):
+    if not is_number(model_num) and 'toy' not in model_num:
         infile_test = infile_test.replace(model_num, model_num.split('_')[0])
     # file dictionary
     files_dict[model_num] = {

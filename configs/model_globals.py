@@ -254,7 +254,7 @@ LSQ_config_dict_minimal = {
 }
 
 # model 1 toys:
-for toy_num in range(N_toys_nominal):
+for toy_num in range(N_toys_nominal-1):
     model_num = f'1_toy_{toy_num}'
     LSQ_config_dict_minimal[model_num] = {
         'subdir': f'1_Nominal_toy_{toy_num}', 'fitnames': {'Initial': f'fma_1_Nominal_toy_{toy_num}_fitmap',

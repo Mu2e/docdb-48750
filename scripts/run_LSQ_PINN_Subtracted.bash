@@ -13,7 +13,8 @@ test="n"
 
 # loop through the 7 models
 #for i in $(seq 1 7);
-for i in 1 9; # nominal, sparser meas
+#for i in 1 9; # nominal, sparser meas
+for i in $(seq 1 7);
 do
     echo $i
     LOGFILE=$SCRIPT_DIR/../data/logs/docdb-48750/${i}_LSQ_fit_PINN_Subtracted.log

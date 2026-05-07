@@ -19,11 +19,16 @@ mapfile_7 = mu2e_ext_path+f'Bmaps/docdb-48750/Mu2e_V13_DSCylFMSAll_Helicalc_All_
 mapfile_8 = mu2e_ext_path+f'Bmaps/docdb-48750/Mu2e_V13_DSCylFMSAll_Helicalc_All_Coils_All_Busbars_Rebar{noise_str}_HPCMagUnc.Mu2E.p'
 mapfile_9 = mu2e_ext_path+f'Bmaps/docdb-48750/Mu2e_V13_DSCylFMSAll_Helicalc_All_Coils_All_Busbars_Rebar{noise_str}_SparseZPhi.Mu2E.p'
 mapfile_10 = mu2e_ext_path+f'Bmaps/docdb-48750/Mu2e_V13_DSCylFMSAll_Helicalc_All_Coils_All_Busbars_Rebar{noise_str}_HPCMagUnc_SparseZPhi.Mu2E.p'
-# model 1 toys:
-for toy_num in range(N_toys_nominal):
-    model_num = f'1_toy_{toy_num}'
 # calculate mean Bx, By, Bz (for params setup)
 mean_fields_dict = get_mean_fields_dict({'nominal': mapfile_125, 'phony_curl': mapfile_4, 'busbars': mapfile_6, 'DSCoils': mapfile_7, 'HPCMagUnc': mapfile_8})
+# model 1 toys:
+mapfile_1_toys = {}
+for toy_num in range(N_toys_nominal-1):
+    model_num = f'1_toy_{toy_num}'
+    mapfile_1_toys[model_num] = mu2e_ext_path+f'Bmaps/docdb-48750/Mu2e_V13_DSCylFMSAll_Helicalc_All_Coils_All_Busbars_Rebar{noise_str}_toy_{toy_num}.Mu2E.p'
+
+mfd = get_mean_fields_dict({model_num: mapfile for model_num, mapfile in mapfile_1_toys.items()})
+mean_fields_dict.update(mfd)
 #### Shared tuples ####
 # data
 cfg_data_test = cfg_data('helicalc', 'DS', mapfile_test,
@@ -59,7 +64,8 @@ cfg_params_test = cfg_params(pitch1=0, ms_h1=0, ns_h1=0, pitch2=0, ms_h2=0, ns_h
                          bs_tuples=None, bs_bounds=None,
                          loss='linear', method='leastsq',
                          ms_asym_max=-1,
-                         version=1006,
+                         #version=1006,
+                         version=1008,
                          noise=noise, z0=z0, AB_lim=None, k_lim=None)
 
 #### Model specific configurations
@@ -687,6 +693,68 @@ cfg_pickle_ps_test10 = cfg_pickle(use_pickle=True, save_pickle=False,
                                  load_name=f'docdb-48750/helicalc_Rebar{noise_str}_HPCMagUnc_SparseZPhi_PINN_subtracted',
                                  save_name=f'docdb-48750/helicalc_Rebar{noise_str}_HPCMagUnc_SparseZPhi_PINN_subtracted', recreate=True)
 
+#### Fit 1 toys ####
+cfg_tuple_toys_dict = {}
+for toy_num in range(N_toys_nominal-1):
+    model_num = f'1_toy_{toy_num}'
+    # data
+    cfg_data_ = cfg_data('helicalc', 'DS', mapfile_1_toys[model_num],
+                         #('Z > 4.200', 'Z < 13.900'))
+                         ('Z >= 4.25', 'Z <= 13.85')) # fix to use BP at upstream end
+    # PINN subtracted
+    n = LSQ_config_dict_minimal[model_num]['fitnames']['Initial']
+    mapfile_ps_ = mu2e_ext_path+f'Bmaps/docdb-48750/Mu2e_V13_DSCylFMSAll_Helicalc_All_Coils_All_Busbars_Rebar{noise_str}_toy_{toy_num}_{n}_PINN_Subtracted.Mu2E.p'
+    mapfile_test_ps_ = mu2e_ext_path+f'Bmaps/docdb-48750/Mu2e_V13_DSCartVal_Helicalc_All_Coils_All_Busbars_Rebar_{n}_PINN_Subtracted.Mu2E.p'
+    cfg_data_ps_ = cfg_data('helicalc', 'DS', mapfile_ps_,
+                            #('Z > 4.200', 'Z < 13.900'))
+                            ('Z >= 4.25', 'Z <= 13.85'))
+    cfg_data_test_ps_ = cfg_data('helicalc', 'DS', mapfile_test_ps_,
+                                 #('Z > 4.200', 'Z < 13.900', 'R <= 0.800'))
+                                 ('Z >= 4.25', 'Z <= 13.85', 'R <= 0.800'))
+    # params
+    cfg_params_ = cfg_params(pitch1=0, ms_h1=0, ns_h1=0, pitch2=0, ms_h2=0, ns_h2=0,
+                             length1=12.5, ms_c1=55, ns_c1=7, length2=0, ms_c2=0, ns_c2=0, # GOOD! Nominal fit, nominal set of data
+                             ks_dict={'k1': [mean_fields_dict[model_num]['Bx'], True],
+                                      'k2': [mean_fields_dict[model_num]['By'], True],
+                                      'k3': [mean_fields_dict[model_num]['Bz'], False],
+                                      'k4': [0., True], 'k5': [0., True],
+                                      'k6': [0., True], 'k7': [0., True],},
+                             bs_tuples=None, bs_bounds=None,
+                             loss='linear', method='leastsq', # lm
+                             ms_asym_max=-1, # NOMINAL
+                             version=1008, # FOR PAPER
+                             noise=noise, z0=z0, AB_lim=None, k_lim=None)
+    # pickle
+    # first fit
+    cfg_pickle_ = cfg_pickle(use_pickle=False, save_pickle=True,
+                             load_name=f'docdb-48750/helicalc_Rebar{noise_str}_toy_{toy_num}',
+                             save_name=f'docdb-48750/helicalc_Rebar{noise_str}_toy_{toy_num}', recreate=False)
+    # test
+    cfg_pickle_test_ = cfg_pickle(use_pickle=True, save_pickle=False,
+                                  load_name=f'docdb-48750/helicalc_Rebar{noise_str}_toy_{toy_num}',
+                                  save_name=f'docdb-48750/helicalc_Rebar{noise_str}_toy_{toy_num}', recreate=True)
+    # PINN subracted fit
+    cfg_pickle_ps_ = cfg_pickle(use_pickle=True, save_pickle=True,
+                             load_name=f'docdb-48750/helicalc_Rebar{noise_str}_toy_{toy_num}',
+                             save_name=f'docdb-48750/helicalc_Rebar{noise_str}_toy_{toy_num}_PINN_subtracted', recreate=False)
+    # test, PINN subtracted
+    cfg_pickle_ps_test_ = cfg_pickle(use_pickle=True, save_pickle=False,
+                                     load_name=f'docdb-48750/helicalc_Rebar{noise_str}_toy_{toy_num}_PINN_subtracted',
+                                     save_name=f'docdb-48750/helicalc_Rebar{noise_str}_toy_{toy_num}_PINN_subtracted', recreate=True)
+    cfg_tuple_toys_dict[model_num] = {
+        'cfg_data': cfg_data_,
+        # 'mapfile_ps': mapfile_ps_,
+        # 'mapfile_test_ps': mapfile_test_ps_,
+        'cfg_data_ps': cfg_data_ps_,
+        'cfg_data_test_ps': cfg_data_test_ps_,
+        'cfg_params': cfg_params_,
+        'cfg_pickle': cfg_pickle_,
+        'cfg_pickle_test': cfg_pickle_test_,
+        'cfg_pickle_ps': cfg_pickle_ps_,
+        #'cfg_pickle_ps_test': cfg_pickle_ps_test_,
+        'cfg_pickle_test_ps': cfg_pickle_ps_test_,
+    }
+
 #### Collect them all into a dictionary
 Lmin = LSQ_config_dict_minimal
 LSQ_config_dict = {
@@ -761,6 +829,14 @@ LSQ_config_dict = {
           'cfg_pickle_test': cfg_pickle_test10, 'cfg_pickle_ps': cfg_pickle_ps10,
           'cfg_pickle_test_ps': cfg_pickle_ps_test10},
 }
+
+# model 1 toys
+for model_num, cd in cfg_tuple_toys_dict.items():
+    d_ = {'subdir': Lmin[model_num]['subdir'], 'fitnames': Lmin[model_num]['fitnames'],
+          'cfg_data_test': cfg_data_test, 'cfg_geom_fit': cfg_geom_cyl, 'cfg_geom_test': cfg_geom_cart,}
+    for k, v in cd.items():
+        d_[k] = v
+    LSQ_config_dict[model_num] = d_
 
 # add to model 1 for p_eff estimate
 # FIXME! Be more careful about params -- don't want to overwrite these accidentally
