@@ -6,7 +6,7 @@ from LSQ_configs import LSQ_config_dict as LSQ_c
 from BFieldPINN import BFieldPINN_data
 # local imports
 from useful_funcs import is_number
-from model_globals import N_opt_tests, opt_dict
+from model_globals import N_opt_tests, opt_dict, p_eff_dict
 
 ### NN configurations
 base_NN_dict = {
@@ -144,6 +144,21 @@ for model_num in opt_dict.keys():
         if k in opt_.keys():
             NN_config_dict[model_num][k] = opt_[k]
 
+# add to model 1 for p_eff estimation
+# FIXME! Be more careful about params -- don't want to overwrite these accidentally
+#for i in range(N_opt_tests):
+#    model_num = f'1_{i}'
+for model_num in p_eff_dict.keys():
+    model_num_ = model_num.split('_')[0]
+    it_num = model_num.split('_')[-1]
+    NN_config_dict[model_num] = dict(
+        deepcopy(base_NN_dict),
+        **{'model_fname': LSQ_c[model_num_]['fitnames']['Initial'], 'NN_type': 'Scalar'},
+    )
+    # updates
+    # FIXME! Add to the dict, not by hand
+    if it_num in ['4', '11']:
+        NN_config_dict[model_num]['LR_init'] = 0.0018
 
 # for paper
 ## 4: curled field (Scalar PINN)
@@ -236,6 +251,9 @@ for model_num in NN_config_dict.keys():
     infile_meas = outfile_meas.replace('_PINN_Subtracted', '').replace('.Mu2E.p', '.Mu2E.Fit.p')
     if not is_number(model_num):
         infile_meas = infile_meas.replace(model_num, model_num.split('_')[0])
+    if 'p_eff' in model_num:
+        i = model_num.split('_')[-1]
+        infile_meas = infile_meas.replace('.Mu2E.Fit.p', f'.Mu2E.Fit.p_eff_pert_{i}.p')
     # check if eval exists
     Bdir = infile_meas[:infile_meas.rfind('/')+1]
     eval_file = infile_meas.replace('.Mu2E', '_eval.Mu2E')
@@ -249,6 +267,10 @@ for model_num in NN_config_dict.keys():
     save_test = os.path.join(model_fname, 'df_test_NN_Results.p')
     save_test_full = os.path.join(model_fname, 'df_test_Full_Results.p')
     infile_test = outfile_test.replace('_PINN_Subtracted', '').replace('.Mu2E.p', '.Mu2E.Fit.p')
+    if 'p_eff' in model_num:
+        i = model_num.split('_')[-1]
+        outfile_meas = outfile_meas.replace('.Mu2E.p', f'.Mu2E.p_eff_pert_{i}.p')
+        outfile_test = outfile_test.replace('.Mu2E.p', f'.Mu2E.p_eff_pert_{i}.p')
     if not is_number(model_num):
         infile_test = infile_test.replace(model_num, model_num.split('_')[0])
     # file dictionary

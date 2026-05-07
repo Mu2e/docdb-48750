@@ -5,7 +5,7 @@ import pandas as pd
 from mu2e import mu2e_ext_path
 from mu2e.cfg_defs import cfg_data, cfg_geom, cfg_plot, cfg_params, cfg_pickle
 from mean_fields import get_mean_fields_dict
-from model_globals import noise, noise_str, phony_curl, phony_curl_str, z0, LSQ_config_dict_minimal, N_opt_tests, opt_dict
+from model_globals import noise, noise_str, phony_curl, phony_curl_str, z0, LSQ_config_dict_minimal, N_opt_tests, opt_dict, p_eff_dict, N_toys_nominal
 
 #### field map locations
 # test / validation points (only one map)
@@ -19,6 +19,9 @@ mapfile_7 = mu2e_ext_path+f'Bmaps/docdb-48750/Mu2e_V13_DSCylFMSAll_Helicalc_All_
 mapfile_8 = mu2e_ext_path+f'Bmaps/docdb-48750/Mu2e_V13_DSCylFMSAll_Helicalc_All_Coils_All_Busbars_Rebar{noise_str}_HPCMagUnc.Mu2E.p'
 mapfile_9 = mu2e_ext_path+f'Bmaps/docdb-48750/Mu2e_V13_DSCylFMSAll_Helicalc_All_Coils_All_Busbars_Rebar{noise_str}_SparseZPhi.Mu2E.p'
 mapfile_10 = mu2e_ext_path+f'Bmaps/docdb-48750/Mu2e_V13_DSCylFMSAll_Helicalc_All_Coils_All_Busbars_Rebar{noise_str}_HPCMagUnc_SparseZPhi.Mu2E.p'
+# model 1 toys:
+for toy_num in range(N_toys_nominal):
+    model_num = f'1_toy_{toy_num}'
 # calculate mean Bx, By, Bz (for params setup)
 mean_fields_dict = get_mean_fields_dict({'nominal': mapfile_125, 'phony_curl': mapfile_4, 'busbars': mapfile_6, 'DSCoils': mapfile_7, 'HPCMagUnc': mapfile_8})
 #### Shared tuples ####
@@ -758,6 +761,41 @@ LSQ_config_dict = {
           'cfg_pickle_test': cfg_pickle_test10, 'cfg_pickle_ps': cfg_pickle_ps10,
           'cfg_pickle_test_ps': cfg_pickle_ps_test10},
 }
+
+# add to model 1 for p_eff estimate
+# FIXME! Be more careful about params -- don't want to overwrite these accidentally
+#for i in range(N_opt_tests):
+#    model_num = f'1_{i}'
+for model_num in p_eff_dict.keys():
+    i = model_num.split('_')[0]
+    if i == '1':
+        cd_ = cfg_data1
+        cdt_ = cfg_data_test
+        cdp_ = cfg_data_ps1
+        cdtp_ = cfg_data_test_ps1
+        cp_ = cfg_params1
+        cpi_ = cfg_pickle1
+        cpit_ = cfg_pickle_test1
+        cpip_ = cfg_pickle_ps1
+        cpipt_ = cfg_pickle_ps_test1
+    else:
+        raise ValueError(f'The model_num "{model_num}" is not implemented yet. Please add it and try again.')
+    # LSQ_config_dict[model_num] = {
+    #     'subdir': Lmin[model_num]['subdir'], 'fitnames': Lmin[model_num]['fitnames'],
+    #     'cfg_data': cfg_data1, 'cfg_data_test': cfg_data_test,
+    #     'cfg_data_ps': cfg_data_ps1, 'cfg_data_test_ps': cfg_data_test_ps1,
+    #     'cfg_geom_fit': cfg_geom_cyl, 'cfg_geom_test': cfg_geom_cart,
+    #     'cfg_params': cfg_params1, 'cfg_pickle': cfg_pickle1,
+    #     'cfg_pickle_test': cfg_pickle_test1, 'cfg_pickle_ps': cfg_pickle_ps1,
+    #     'cfg_pickle_test_ps': cfg_pickle_ps_test1}
+    LSQ_config_dict[model_num] = {
+        'subdir': Lmin[model_num]['subdir'], 'fitnames': Lmin[model_num]['fitnames'],
+        'cfg_data': cd_, 'cfg_data_test': cdt_,
+        'cfg_data_ps': cdp_, 'cfg_data_test_ps': cdtp_,
+        'cfg_geom_fit': cfg_geom_cyl, 'cfg_geom_test': cfg_geom_cart,
+        'cfg_params': cp_, 'cfg_pickle': cpi_,
+        'cfg_pickle_test': cpit_, 'cfg_pickle_ps': cpip_,
+        'cfg_pickle_test_ps': cpipt_}
 
 # add to model 1 for hyperparam opt
 # FIXME! Be more careful about params -- don't want to overwrite these accidentally

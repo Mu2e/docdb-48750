@@ -2,6 +2,8 @@
 # thermal noise
 noise = 0.3 # Gauss
 noise_str = '_noise'+str(noise).replace('.', 'p')
+# toys (including nominal)
+N_toys_nominal = 10
 # phony curled field
 phony_curl = 20.0 # Gauss / m
 phony_curl_str = f'_curlZ'+str(phony_curl).replace('-', 'm').replace('.', 'p')
@@ -21,6 +23,17 @@ N_layer_nodes = len(N_layer_tests) * len(N_nodes_tests)
 # N_opt_tests = N_layer_nodes
 # tanh added
 #N_opt_tests = N_layer_nodes+1 # after determining best -- FIXME! More for "a" optim?
+# p_eff estimation
+#tau_p_eff = 0.1 # how much to perturb the residuals
+tau_p_eff = 0.5 * noise
+seed_p_eff_gen = 54321 # if I run again, I want the same seed (repeatability)
+N_toys_p_eff = 20 # 30 min each, 4 GPUs -> 2.5 hours
+# create dict for p_eff estimation (same network structure)
+p_eff_dict = {}
+for i in range(N_toys_p_eff):
+    model_num = f'1_p_eff_pert_{i}'
+    p_eff_dict[model_num] = 0
+# create dict for optimization of network structure
 opt_dict = {}
 i = 0
 for L in N_layer_tests:
@@ -239,6 +252,27 @@ LSQ_config_dict_minimal = {
           'fitnames': {'Initial': 'fma_10_HPCMagUnc_SparseZPhi_fitmap', 'PINN_Subtracted': 'fma_10_HPCMagUnc_SparseZPhi_PINN_subtracted_fitmap'},
     },
 }
+
+# model 1 toys:
+for toy_num in range(N_toys_nominal):
+    model_num = f'1_toy_{toy_num}'
+    LSQ_config_dict_minimal[model_num] = {
+        'subdir': f'1_Nominal_toy_{toy_num}', 'fitnames': {'Initial': f'fma_1_Nominal_toy_{toy_num}_fitmap',
+        'PINN_Subtracted': f'fma_1_Nominal_toy_{toy_num}_PINN_subtracted_fitmap'}
+    }
+
+# add to model 1 for p_eff estimation
+# FIXME! Be more careful about fitnames -- don't want to overwrite these accidentally
+#for i in range(N_opt_tests):
+#    model_num = f'1_{i}'
+for model_num in p_eff_dict.keys():
+    i = model_num.split('_')[0]
+    fnames = LSQ_config_dict_minimal[i]['fitnames']
+    sdir = LSQ_config_dict_minimal[i]['subdir']
+    LSQ_config_dict_minimal[model_num] = {
+        'subdir': sdir.replace(i, model_num),
+        'fitnames': {'Initial': fnames['Initial'], f'PINN_Subtracted': fnames['PINN_Subtracted'].replace(i, model_num)}
+    }
 
 # add to model 1 for hyperparam opt
 # FIXME! Be more careful about fitnames -- don't want to overwrite these accidentally

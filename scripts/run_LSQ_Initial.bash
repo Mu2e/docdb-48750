@@ -12,7 +12,8 @@ test="n"
 #test="y"
 
 # loop through the 7 models
-for i in $(seq 1 7);
+#for i in $(seq 1 7);
+for i in 1 9; # nominal, sparser meas
 do
     echo $i
     LOGFILE=$SCRIPT_DIR/../data/logs/docdb-48750/${i}_LSQ_fit_Initial.log

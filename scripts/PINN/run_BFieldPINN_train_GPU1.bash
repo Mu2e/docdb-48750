@@ -9,7 +9,7 @@ conda activate mu2eBFit
 # hard code for testing (should not switch to "y"
 # once development is done -- will override fits!!)
 test="n"
-#test="y"
+# test="y"
 
 DEV=1
 
@@ -35,7 +35,10 @@ DEV=1
 #MODELS=("4")
 #MODELS=("8_0")
 #MODELS=("2_0")
-MODELS=("9")
+#MODELS=("9")
+# p_eff estimation
+#MODELS=("1_p_eff_pert_5" "1_p_eff_pert_6" "1_p_eff_pert_7" "1_p_eff_pert_8" "1_p_eff_pert_9")
+MODELS=("1_p_eff_pert_4")
 
 #for i in 2 3;
 for i in "${MODELS[@]}";

@@ -7,7 +7,7 @@ import os
 import sys
 fpath = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(os.path.abspath(os.path.join(fpath, '..', '..', 'configs')))
-from model_globals import noise, noise_str, phony_curl, phony_curl_str
+from model_globals import noise, noise_str, phony_curl, phony_curl_str, N_toys_nominal
 
 # add a curled field ?
 def Field_With_Curl(x, y, z, Cx = 10., Cy = 10., Cz = 10.):
@@ -179,3 +179,26 @@ if __name__=='__main__':
     df10.to_pickle(fname10)
     print('Done.\n')
     print('Field map prep is complete.')
+    ## measurement toys
+    print()
+    print('Preparing toys (resample noise):')
+    print(f'N_toys_nominal = {N_toys_nominal} (including the original toy)')
+    for i in range(N_toys_nominal-1):
+        #### add noise
+        print(f'{i}: Adding noise to field...')
+        fname_toy = fname0.replace('.Mu2E.p', f'{noise_str}_toy_{i}.Mu2E.p')
+        df_toy = df0.copy()
+        dBx, dBy, dBz = np.random.normal(loc=0.0, scale=noise, size=(3, len(df_toy)))
+        df_toy.loc[:, 'Bx'] = df_toy.loc[:, 'Bx'] + dBx
+        df_toy.loc[:, 'By'] = df_toy.loc[:, 'By'] + dBy
+        df_toy.loc[:, 'Bz'] = df_toy.loc[:, 'Bz'] + dBz
+        print(f'(global)noise={noise}, mean (dBx, dBy, dBz) = ({np.mean(dBx):0.3f},'\
+              +f'{np.mean(dBy):0.3f}, {np.mean(dBz):0.3f}); RMS (Bx, By, Bz) = ('\
+              +f'{np.std(dBx, ddof=1):0.3f}, {np.std(dBy, ddof=1):0.3f}, {np.std(dBz, ddof=1):0.3f}).')
+        # reevaluate Br, Bphi to propagate the noise
+        df_toy.eval('Bphi = -Bx*sin(Phi)+By*cos(Phi)', inplace=True)
+        df_toy.eval('Br = Bx*cos(Phi)+By*sin(Phi)', inplace=True)
+        # save
+        print(f'Saving to: {fname_toy}.')
+        df_toy.to_pickle(fname_toy)
+        print('Done.\n')
