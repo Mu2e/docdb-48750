@@ -31,7 +31,9 @@ DEV=0
 #MODELS=("1")
 # MODELS=("1_0")
 # p_eff estimation
-MODELS=("1_p_eff_pert_0" "1_p_eff_pert_1" "1_p_eff_pert_2" "1_p_eff_pert_3" "1_p_eff_pert_4")
+#MODELS=("1_p_eff_pert_0" "1_p_eff_pert_1" "1_p_eff_pert_2" "1_p_eff_pert_3" "1_p_eff_pert_4")
+# model 1 toys
+MODELS=("1_toy_0" "1_toy_1")
 
 #for i in 1;
 for i in "${MODELS[@]}";

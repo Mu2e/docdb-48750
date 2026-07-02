@@ -40,7 +40,7 @@ DEV=1
 #MODELS=("1_p_eff_pert_5" "1_p_eff_pert_6" "1_p_eff_pert_7" "1_p_eff_pert_8" "1_p_eff_pert_9")
 #MODELS=("1_p_eff_pert_4")
 # model 1 toys
-MODELS=("1_toy_0")
+MODELS=("1_toy_2" "1_toy_3")
 
 #for i in 2 3;
 for i in "${MODELS[@]}";

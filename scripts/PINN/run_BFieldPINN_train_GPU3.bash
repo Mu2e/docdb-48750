@@ -31,7 +31,9 @@ DEV=3
 # p_eff estimation
 #MODELS=("1_p_eff_pert_15" "1_p_eff_pert_16" "1_p_eff_pert_17" "1_p_eff_pert_18" "1_p_eff_pert_19")
 # rerun 1 with the proper pretraining
-MODELS=("1")
+# MODELS=("1")
+# model 1 toys
+MODELS=("1_toy_6" "1_toy_7" "1_toy_8")
 
 #for i in 5 7;
 #for i in 7;

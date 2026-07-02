@@ -12,6 +12,7 @@ from PINN_configs import files_dict
 
 def merge_results(model_num, files_dict):
     model_fname = files_dict[model_num]['model_fname']
+    ###outfile_meas = config['cfg_data_ps'].path
     print(f'Merging results for model {model_num} ({model_fname})...')
     # first load saved PINN
     save = files_dict[model_num]['save']
@@ -25,8 +26,12 @@ def merge_results(model_num, files_dict):
     else:
         msuff = ''
     name = LSQ_config_dict[model_num]['fitnames']['PINN_Subtracted']
+    # if not 'toy' in model_fname:
     mfile = out['meas'].replace('.Mu2E.p', f'_{name}{msuff}.Mu2E.Fit.p')
     tfile = out['test'].replace('.Mu2E.p', f'_{name}.Mu2E.Fit.p')
+    # else:
+    #     mfile = out['meas'].replace('.Mu2E.p', f'_{name}{msuff}.Mu2E.Fit.p')
+    #     tfile = out['test'].replace('.Mu2E.p', f'_{name}.Mu2E.Fit.p').replace('')
     print(f'df_meas: LSQ refit from {mfile} added to PINN results {save["meas"]}.')
     print(f'df_test: LSQ refit from {tfile} added to PINN results {save["test"]}.')
     df_meas_final = pd.read_pickle(mfile)
@@ -52,11 +57,14 @@ def merge_results(model_num, files_dict):
 
 
 if __name__=='__main__':
+    models = ['1'] + [f'1_toy_{i}' for i in range(9)]
+    # models = ['1_toy_0']
     #for model_num in files_dict.keys():
     #for model_num in ['1']:
     # for model_num in ['4']:
     # for model_num in ['4_0']:
     # for model_num in ['5']:
-    for model_num in ['8']:
+    #for model_num in ['8']:
     # for model_num in ['10']:
+    for model_num in models:
         df_meas, df_test = merge_results(model_num, files_dict)
