@@ -1,3 +1,4 @@
+import numpy as np
 # parameters for modifying original map data
 # thermal noise
 noise = 0.3 # Gauss
@@ -39,7 +40,7 @@ i = 0
 for L in N_layer_tests:
     for N in N_nodes_tests:
         model_num = f'1_{i}'
-        opt_dict[model_num] = {'N_hidden': L, 'N_nodes': N, 'activ': 'x_sin2x', 'snake_a': 5.0, 'LR_init': 0.002, 'N_f': 50000, 'initializer_lim': 0.055}
+        opt_dict[model_num] = {'N_hidden': L, 'N_nodes': N, 'activ': 'x_sin2x', 'snake_a': 5.0, 'snake_f': 1./2., 'snake_D': 1., 'LR_init': 0.002, 'N_f': 50000, 'initializer_lim': 0.055}
         #opt_dict[model_num] = {'N_hidden': L, 'N_nodes': N, 'activ': 'x_sin2x', 'snake_a': 2.0, 'LR_init': 0.002, 'N_f': 50000, 'initializer_lim': 0.05}
         ##opt_dict[model_num] = {'N_hidden': L, 'N_nodes': N, 'activ': 'x_sin2x', 'snake_a': 2.0, 'LR_init': 0.002, 'N_f': 50000}
         ##opt_dict[model_num]['initializer_lim'] = (3. / N)**(1./2.)
@@ -93,12 +94,23 @@ for L in N_layer_tests:
         i += 1
 # after determining best L and N
 # optimize snake "a"
-for a in [0.1, 0.5, 1.0, 2.0, 5.0, 10.0, 20.0, 50.0]:
+#for a in [0.1, 0.5, 1.0, 2.0, 5.0, 10.0, 20.0, 50.0]:
+for a, f_, D_ in zip([0.1, 0.5, 1.0, 2.0, 5.0, 10.0, 20.0, 50.0, 5.0], 8*[1./2.] + [0.], 8*[1.] + [1./5.]):
     model_num = f'1_{i}'
     # usin best number of layers and nodes: 8 and 64
-    opt_dict[model_num] = opt_dict[model_num] = {'N_hidden': 8, 'N_nodes': 64, 'activ': 'x_sin2x', 'snake_a': a, 'LR_init': 0.002, 'N_f': 50000}
-    opt_dict[model_num]['initializer_lim'] = (3. / N)**(1./2.)
-    opt_dict[model_num]['lambda_pretrain'] = 500
+    opt_dict[model_num] = {'N_hidden': 8, 'N_nodes': 64, 'activ': 'x_sin2x', 'snake_a': a, 'snake_f': f_, 'snake_D': D_, 'LR_init': 0.002, 'N_f': 50000}
+    if f_ < 0.001: # regular snake
+        il = (3./64.)**(1/2)
+    else:
+        if a >49.9: # a=50 diverged quickly
+            kappa=0.15
+            opt_dict[model_num]['LR_init'] = 0.002
+        else:
+            kappa=0.7
+        il = (kappa*np.pi/(D_*a*(64.**(1/2))))
+    opt_dict[model_num]['initializer_lim'] = il
+    ###opt_dict[model_num]['initializer_lim'] = (3. / N)**(1./2.)
+    #opt_dict[model_num]['lambda_pretrain'] = 500
     # customizations
     #if i in [16, 17, 18, 23]: # play around with LR (no movement of these)
     # if i in [23]: # play around with LR (no movement of these)
@@ -107,12 +119,29 @@ for a in [0.1, 0.5, 1.0, 2.0, 5.0, 10.0, 20.0, 50.0]:
     #     opt_dict[model_num]['lambda_pretrain'] = 200
     # if i in [16, 17, 18]: # play around with LR (no movement of these)
     #     opt_dict[model_num]['LR_init'] = 0.01
+    ### tempering, after further tests below
+    opt_dict[model_num]['lambda_pretrain'] = 0
+    opt_dict[model_num]['lambda_'] = 0.001
+    opt_dict[model_num]['lambda_N_wait'] = 3
+    opt_dict[model_num]['lambda_start_temper'] = 1250
+    opt_dict[model_num]['lambda_mult_factor'] = 1.0
+    opt_dict[model_num]['lambda_add_factor'] = 0.0001
+    opt_dict[model_num]['lambda_max'] = 0.1
+    opt_dict[model_num]['LR_patience'] = 300 # default = 300
+    opt_dict[model_num]['Stop_patience'] = 5000 # default = 3000
+    opt_dict[model_num]['LR_min'] = 5e-5 # default = 1e-8
+    opt_dict[model_num]['Stop_monitor'] = 'Loss_val'
+    opt_dict[model_num]['LR_monitor'] = 'Loss'
+
     i += 1
 # swap to tanh activation using best network structure. Note "a" is meaningless now
 model_num = f'1_{i}'
-opt_dict[model_num] = {'N_hidden': 8, 'N_nodes': 64, 'activ': 'tanh', 'snake_a': 2.0, 'LR_init': 0.002, 'N_f': 50000,
+opt_dict[model_num] = {'N_hidden': 8, 'N_nodes': 64, 'activ': 'tanh', 'snake_a': 5.0, 'snake_f': 1./2., 'snake_D': 1., 'LR_init': 0.002,
+    'N_f': 50000,
                #'initializer_lim': (3. / 64.)**(1./2.), 'lambda_pretrain': 500}
-               'initializer_lim': 0.5, 'lambda_pretrain': 500}
+               # 'initializer_lim': 0.5, 'lambda_pretrain': 500}
+               'initializer_lim': 0.1, 'lambda_pretrain': 0, 'lambda_start_temper': 6000, 'epochs': 20000, 'LR_patience': 1000} # lambda is irrelevant so don't try to modify it
+
 i += 1
 # lambda
 #for lambda_ in [0.0, 0.1, 0.2, 0.5, 1.0, 2.0]: # CORRECT

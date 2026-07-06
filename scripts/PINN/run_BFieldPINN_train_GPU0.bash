@@ -16,7 +16,9 @@ DEV=0
 # hyperparam opt
 #MODELS=("1_0" "1_4" "1_8" "1_12")
 # distrib time
-MODELS=("1_0" "1_1" "1_2" "1_3" "1_4")
+#MODELS=("1_0" "1_1" "1_2" "1_3" "1_4")
+# activ opt
+MODELS=("1_16" "1_17")
 # reruns
 # MODELS=("1_12")
 # MODELS=("1_9")

@@ -20,7 +20,8 @@ base_NN_dict = {
     ## training info
     'perc_train': 0.8,
     ## NETWORK STRUCTURE
-    'N_hidden': 8, 'N_nodes': 64, 'activ': 'x_sin2x', 'snake_a': 5.0,
+    'N_hidden': 8, 'N_nodes': 64, 'activ': 'x_sin2x',
+    'snake_a': 5.0, 'snake_f': 1./2., 'snake_D': 1.,
     # 'N_hidden': 8, 'N_nodes': 64, 'activ': 'x_sin2x', 'snake_a': 2.0,
     # 'N_hidden': 8, 'N_nodes': 64, 'activ': 'x_sin2x', 'snake_a': 10.0,
     # 'lambda_': 0.1, 'N_f': 50000, 'reg': 0.0, 'initializer_type': 'uniform',
@@ -143,12 +144,14 @@ for model_num in opt_dict.keys():
     NN_config_dict[model_num]['activ'] = opt_['activ']
     # below only relevant when using snake activation
     NN_config_dict[model_num]['snake_a'] = opt_['snake_a']
+    # NN_config_dict[model_num]['snake_f'] = opt_['snake_f']
+    # NN_config_dict[model_num]['snake_D'] = opt_['snake_D']
     # lambda_
     #if 'lambda_' in opt_.keys():
     #    NN_config_dict[model_num]['lambda_'] = opt_['lambda_']
     # many optional params
     for k in ['lambda_', 'lambda_N_wait', 'lambda_start_temper', 'lambda_mult_factor', 'lambda_add_factor',
-    'lambda_max', 'LR_patience', 'Stop_monitor', 'LR_monitor', 'Stop_patience', 'LR_min', 'NN_type']:
+    'lambda_max', 'LR_patience', 'Stop_monitor', 'LR_monitor', 'Stop_patience', 'LR_min', 'NN_type', 'snake_f', 'snake_D', 'epochs']:
         if k in opt_.keys():
             NN_config_dict[model_num][k] = opt_[k]
 

@@ -16,7 +16,11 @@ DEV=3
 # hyperparam opt
 #MODELS=("1_3" "1_7" "1_11" "1_15")
 # distrib time
-MODELS=("1_12" "1_10")
+# MODELS=("1_12" "1_10")
+# activ opt
+#MODELS=("1_23" "1_24" "1_25")
+# reruns
+MODELS=("1_25")
 # reruns
 #MODELS=("1_11" "1_15")
 # remove memory overrun
