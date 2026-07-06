@@ -9,7 +9,7 @@ We use a more convential activation, $\tanh$, for a final comparison. For the re
 we use the DELTAsnake activation with $a=5$, which is close to the optimal value in the shallow minimum in the region $a \in [0.5, 10.0]$.
 This selection is denoted by the row shaded in green.
 Any activation in which the training diverges is shaded red; this only occurs when $a>10$. Considering only the shallow minimum of the
-DELTAsnake trials, the DELTAsnake activation outperforms both the snake activation and \tanh activation in the MSE loss in addition to
+DELTAsnake trials, the DELTAsnake activation outperforms both the snake activation and $\tanh$ activation in the MSE loss in addition to
 a $\times 10$ smaller divergence loss in the DELTAsnake trials.}
 \begin{tabular}{l|c|c|c||c|c|c|c|c}
 Activation & $a$ & $f$ & $G$ & $L_{PINN}$ & $L_B$ & $L_{\nabla \cdot B}$ & $L_{val}$ & Runtime (m) \\\hline
