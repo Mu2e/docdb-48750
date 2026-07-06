@@ -15,6 +15,8 @@ DEV=3
 
 # hyperparam opt
 #MODELS=("1_3" "1_7" "1_11" "1_15")
+# distrib time
+MODELS=("1_12" "1_10")
 # reruns
 #MODELS=("1_11" "1_15")
 # remove memory overrun
@@ -33,7 +35,7 @@ DEV=3
 # rerun 1 with the proper pretraining
 # MODELS=("1")
 # model 1 toys
-MODELS=("1_toy_6" "1_toy_7" "1_toy_8")
+# MODELS=("1_toy_6" "1_toy_7" "1_toy_8")
 
 #for i in 5 7;
 #for i in 7;

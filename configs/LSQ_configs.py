@@ -403,7 +403,13 @@ cfg_data_test_ps5 = cfg_data('helicalc', 'DS', mapfile_test_ps5,
 #                          noise=noise, z0=z0, AB_lim=None, k_lim=None)
 ## FIXME! This is just for testing various parameter configurations for PINN paper
 cfg_params5 = cfg_params(pitch1=0, ms_h1=0, ns_h1=0, pitch2=0, ms_h2=0, ns_h2=0,
-                         length1=12.5, ms_c1=60, ns_c1=1, length2=0, ms_c2=0, ns_c2=0,
+                         #length1=12.5, # nominal
+                         # testing length limits
+                         #length1=9.6, # exact data length --> bad
+                         length1=10.0, # adjust
+                         ###ms_c1=60, ns_c1=1, length2=0, ms_c2=0, ns_c2=0, # orig minimal
+                         ###ms_c1=55, ns_c1=1, length2=0, ms_c2=0, ns_c2=0,
+                         ms_c1=55, ns_c1=7, length2=0, ms_c2=0, ns_c2=0, # test with nominal, large L
                          # length1=14.0, ms_c1=65, ns_c1=1, length2=0, ms_c2=0, ns_c2=0,
                          ks_dict={'k1': [mean_fields_dict['nominal']['Bx'], True],
                                   'k2': [mean_fields_dict['nominal']['By'], True],

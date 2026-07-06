@@ -39,18 +39,24 @@ i = 0
 for L in N_layer_tests:
     for N in N_nodes_tests:
         model_num = f'1_{i}'
-        opt_dict[model_num] = {'N_hidden': L, 'N_nodes': N, 'activ': 'x_sin2x', 'snake_a': 5.0, 'LR_init': 0.002, 'N_f': 50000, 'initializer_lim': 0.05}
+        opt_dict[model_num] = {'N_hidden': L, 'N_nodes': N, 'activ': 'x_sin2x', 'snake_a': 5.0, 'LR_init': 0.002, 'N_f': 50000, 'initializer_lim': 0.055}
         #opt_dict[model_num] = {'N_hidden': L, 'N_nodes': N, 'activ': 'x_sin2x', 'snake_a': 2.0, 'LR_init': 0.002, 'N_f': 50000, 'initializer_lim': 0.05}
         ##opt_dict[model_num] = {'N_hidden': L, 'N_nodes': N, 'activ': 'x_sin2x', 'snake_a': 2.0, 'LR_init': 0.002, 'N_f': 50000}
         ##opt_dict[model_num]['initializer_lim'] = (3. / N)**(1./2.)
         #opt_dict[model_num]['initializer_lim'] = 0.05
         # opt_dict[model_num]['initializer_lim'] = 0.15 # 16 nodes
+        '''
         opt_dict[model_num]['initializer_lim'] = 0.11 # 16 nodes, using heuristic, x0.7
+        '''
         #opt_dict[model_num]['initializer_lim'] = 0.126 # 16 nodes, using heuristic, x0.8
         # opt_dict[model_num]['initializer_lim'] = 0.157 # 16 nodes, using heuristic, x1.0
+        '''
         opt_dict[model_num]['lambda_pretrain'] = 500
+        '''
         # opt_dict[model_num]['LR_init'] = 0.004 # 1_0 tests
+        '''
         opt_dict[model_num]['LR_init'] = 0.01 # 1_0 tests
+        '''
         # further tuning after initial tests
         #if i in [9, 12, 13]: # no movement from initial loss
         #if i in [9]: # no movement from initial loss

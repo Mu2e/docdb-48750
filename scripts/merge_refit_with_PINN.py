@@ -57,10 +57,11 @@ def merge_results(model_num, files_dict):
 
 
 if __name__=='__main__':
-    models = ['1'] + [f'1_toy_{i}' for i in range(9)]
+    # models = ['1'] + [f'1_toy_{i}' for i in range(9)]
     # models = ['1_toy_0']
+    models = ['1']
     #for model_num in files_dict.keys():
-    #for model_num in ['1']:
+    # for model_num in ['1']:
     # for model_num in ['4']:
     # for model_num in ['4_0']:
     # for model_num in ['5']:

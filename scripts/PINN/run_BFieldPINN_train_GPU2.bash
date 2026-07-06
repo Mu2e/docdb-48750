@@ -15,6 +15,8 @@ DEV=2
 
 # hyperparam opt
 # MODELS=("1_2" "1_6" "1_10" "1_14")
+# distrib time
+MODELS=("1_8" "1_9" "1_13")
 # reruns
 # MODELS=("1_14")
 # MODELS=("1_12")
@@ -33,7 +35,7 @@ DEV=2
 #MODELS=("1_p_eff_pert_10" "1_p_eff_pert_11" "1_p_eff_pert_12" "1_p_eff_pert_13" "1_p_eff_pert_14")
 # MODELS=("1_p_eff_pert_11")
 # model 1 toys
-MODELS=("1_toy_4" "1_toy_5")
+# MODELS=("1_toy_4" "1_toy_5")
 
 #for i in 4 6;
 #for i in 6;

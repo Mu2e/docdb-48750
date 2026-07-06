@@ -14,7 +14,9 @@ test="n"
 DEV=0
 
 # hyperparam opt
-# MODELS=("1_0" "1_4" "1_8" "1_12")
+#MODELS=("1_0" "1_4" "1_8" "1_12")
+# distrib time
+MODELS=("1_0" "1_1" "1_2" "1_3" "1_4")
 # reruns
 # MODELS=("1_12")
 # MODELS=("1_9")
@@ -33,7 +35,7 @@ DEV=0
 # p_eff estimation
 #MODELS=("1_p_eff_pert_0" "1_p_eff_pert_1" "1_p_eff_pert_2" "1_p_eff_pert_3" "1_p_eff_pert_4")
 # model 1 toys
-MODELS=("1_toy_0" "1_toy_1")
+# MODELS=("1_toy_0" "1_toy_1")
 
 #for i in 1;
 for i in "${MODELS[@]}";
