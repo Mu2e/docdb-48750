@@ -1,0 +1,38 @@
+\begin{table}[htbp!]
+\center
+\caption{A hyperparameter scan over the activation used at each node of the hidden layers to determine the optimal scalar 
+PINN network structure for the nominal Mu2e DS dataset.
+The hyperparameter $\lambda=0.1$ is set in each test, and the number of hidden layers and nodes per hidden layer are set to their
+optimal values of $8$ and $64$, respectively. We train using the DELTAsnake activation ($f=0.5$, $G=1$) for various values of $a$. We
+run the nominal case of $a=5$ a second time using the standard snake activation ($f=0$, $G=1/a$). 
+We use a more convential activation, $\tanh$, for a final comparison. For the results presented in the paper
+we use the DELTAsnake activation with $a=5$, which is close to the optimal value in the shallow minimum in the region $a \in [0.5, 10.0]$.
+This selection is denoted by the row shaded in green.
+Any activation in which the training diverges is shaded red; this only occurs when $a>10$. Considering only the shallow minimum of the
+DELTAsnake trials, the DELTAsnake activation outperforms both the snake activation and $\tanh$ activation in the MSE loss in addition to
+a $\times 10$ smaller divergence loss in the DELTAsnake trials.}
+\begin{tabular}{l|c|c|c||c|c|c|c|c}
+Activation & $a$ & $f$ & $G$ & $L_{PINN}$ & $L_B$ & $L_{\nabla \cdot B}$ & $L_{val}$ & Runtime (m) \\\hline
+ DELTAsnake &  $0.1$ &  $0.5$ &  $1.0$ & $0.0946$ & $0.0940$ & $0.0059$ & $0.0943$ & $39$\\
+\hline
+ DELTAsnake &  $0.5$ &  $0.5$ &  $1.0$ & $0.0907$ & $0.0904$ & $0.0027$ & $0.0911$ & $39$\\
+\hline
+ DELTAsnake &  $1.0$ &  $0.5$ &  $1.0$ & $0.0899$ & $0.0897$ & $0.0021$ & $0.0910$ & $24$\\
+\hline
+ DELTAsnake &  $2.0$ &  $0.5$ &  $1.0$ & $0.0898$ & $0.0896$ & $0.0018$ & $0.0912$ & $25$\\
+\hline
+\cellcolor{green!30} DELTAsnake & \cellcolor{green!30} $5.0$ & \cellcolor{green!30} $0.5$ & \cellcolor{green!30} $1.0$ & \cellcolor{green!30}\cellcolor{green!30}$0.0886$ &\cellcolor{green!30} $0.0883$ &\cellcolor{green!30} $0.0023$ &\cellcolor{green!30} $0.0930$ &\cellcolor{green!30} $25$\\
+\hline
+ DELTAsnake &  $10.0$ &  $0.5$ &  $1.0$ & $0.0905$ & $0.0903$ & $0.0019$ & $0.0912$ & $39$\\
+\hline
+ \cellcolor{red!30} DELTAsnake &  \cellcolor{red!30} $20.0$ &  \cellcolor{red!30} $0.5$ &  \cellcolor{red!30} $1.0$ &  \cellcolor{red!30} \cellcolor{red!30}$\ $ & \cellcolor{red!30} $\ $ & \cellcolor{red!30} $\ $ & \cellcolor{red!30} $\ $ & \cellcolor{red!30} $\ $\\
+\hline
+ \cellcolor{red!30} DELTAsnake &  \cellcolor{red!30} $50.0$ &  \cellcolor{red!30} $0.5$ &  \cellcolor{red!30} $1.0$ &  \cellcolor{red!30} \cellcolor{red!30}$\ $ & \cellcolor{red!30} $\ $ & \cellcolor{red!30} $\ $ & \cellcolor{red!30} $\ $ & \cellcolor{red!30} $\ $\\
+\hline
+ snake &  $5.0$ &  $0.0$ &  $0.2$ & $0.0921$ & $0.0908$ & $0.0125$ & $0.0916$ & $39$\\
+\hline
+ $\tanh$ &  -- &  -- &  -- & $0.0944$ & $0.0931$ & $0.0139$ & $0.0927$ & $16$\\
+\hline
+\end{tabular}
+\label{tab:hyperparam_opt_activation}
+\end{table}

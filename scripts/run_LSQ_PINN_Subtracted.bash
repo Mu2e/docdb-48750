@@ -12,10 +12,19 @@ test="n"
 #test="y"
 
 # loop through the 7 models
-for i in $(seq 1 7);
+#for i in $(seq 1 7);
+#for i in 1 9; # nominal, sparser meas
+# for i in 1;
+# for i in $(seq 1 7);
+for i in $(seq 0 8); # model 1 toys
 do
     echo $i
-    LOGFILE=$SCRIPT_DIR/../data/logs/docdb-48750/${i}_LSQ_fit_PINN_Subtracted.log
+    # standard
+    # LOGFILE=$SCRIPT_DIR/../data/logs/docdb-48750/${i}_LSQ_fit_PINN_Subtracted.log
+    # echo LOGFILE=${LOGFILE}
+    # python $SCRIPT_DIR/LSQ/run_LSQ_fit.py -M $i -P y -t ${test} &> $LOGFILE
+    # model 1 toys
+    LOGFILE=$SCRIPT_DIR/../data/logs/docdb-48750/1_toy_${i}_LSQ_fit_PINN_Subtracted.log
     echo LOGFILE=${LOGFILE}
-    python $SCRIPT_DIR/LSQ/run_LSQ_fit.py -M $i -P y -t ${test} &> $LOGFILE
+    python $SCRIPT_DIR/LSQ/run_LSQ_fit.py -M 1_toy_$i -P y -t ${test} &> $LOGFILE
 done
